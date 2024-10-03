@@ -10,3 +10,4 @@ python-dotenv
 requests
 scrapingbee
 trafilatura
+google-generativeai

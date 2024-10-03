@@ -1,7 +1,7 @@
-from extractors.url import SEOContentExtractor
-from extractors.gsc import GSCExtractor
-from extractors.ga4 import GA4Extractor
-from extractors.psi import PSIExtractor
+from lib.extractors.url import SEOContentExtractor
+from lib.extractors.gsc import GSCExtractor
+from lib.extractors.ga4 import GA4Extractor
+from lib.extractors.psi import PSIExtractor
 from copy import deepcopy
 
 

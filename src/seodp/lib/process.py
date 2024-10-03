@@ -10,20 +10,10 @@ from lib.extractors import ExtractorTools
 class URLProcessor:
     def __init__(self, config):
         self.config = config
-        self.db_file = config.db_file
+        self.data_processor = DataProcessor(config)
         self.schedule = config.schedule
         self.process_interval = timedelta(weeks=1) if self.schedule == 'weekly' else timedelta(days=30)
-        self.last_run = self.get_last_run_date()
-        self.next_run = self.last_run + self.process_interval if self.last_run else datetime.now()
-        self.data_processor = DataProcessor(config)
-
-    def get_last_run_date(self):
-        conn = sqlite3.connect(self.db_file)
-        c = conn.cursor()
-        c.execute("SELECT MAX(run_date) FROM data")
-        last_run_date = c.fetchone()[0]
-        conn.close()
-        return datetime.strptime(last_run_date, '%Y-%m-%d') if last_run_date else None
+        self.next_run = self.data_processor.get_last_run_date() + self.process_interval if self.data_processor.get_last_run_date() else datetime.now()
 
     def run(self):
         while self.next_run <= datetime.now():
@@ -56,9 +46,6 @@ class URLProcessor:
         prior_data = self.data_processor.extract_data(url, prior_start_date, prior_end_date)
         analysis = self.data_processor.generate_insights(current_data, prior_data)
         return analysis
-
-    def extract_data(self, url):
-        return self.data_processor.extract_data(url)
 
     def extract_urls_from_sitemap(self, sitemap_file):
         urls = []
@@ -93,8 +80,19 @@ class DataProcessor:
         conn.commit()
         conn.close()
 
+    def authenticate(self):
+        self.extractor_tools.authenticate()
+
     def extract_data(self, url, start_date=None, end_date=None):
         return self.extractor_tools.extract_data(url, start_date, end_date)
+
+    def get_last_run_date(self):
+        conn = sqlite3.connect(self.db_file)
+        c = conn.cursor()
+        c.execute("SELECT MAX(run_date) FROM data")
+        last_run_date = c.fetchone()[0]
+        conn.close()
+        return datetime.strptime(last_run_date, '%Y-%m-%d') if last_run_date else None
 
     def get_prior_data(self, url, run_date):
         conn = sqlite3.connect(self.db_file)
