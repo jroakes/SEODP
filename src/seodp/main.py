@@ -30,7 +30,7 @@ def main():
             f.write(insights)
     elif args.url and args.output:
         page_full_url = args.url
-        data = url_processor.extract_data(page_full_url)
+        data = url_processor.data_processor.extract_data(page_full_url)
         with open(args.output, 'w') as f:
             json.dump(data, f, indent=4)
     elif args.url and not args.output:
@@ -40,4 +40,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main() 
+    main()
