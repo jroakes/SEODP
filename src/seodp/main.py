@@ -1,39 +1,43 @@
-"""Main module for the SEO Data Puller."""
+import argparse
+import json
+from lib.process import URLProcessor
 
-from lib.extractors.ga4 import GA4Extractor
-from lib.extractors.gsc import GSCExtractor
 from settings import CONFIG
+from lib.logging import logger
+
 
 def main():
-    ga4_extractor = GA4Extractor(CONFIG.api.service_account_file, CONFIG.api.subject_email)
-    gsc_extractor = GSCExtractor(CONFIG.api.service_account_file, CONFIG.api.subject_email)
+    parser = argparse.ArgumentParser(description='SEO Data Puller')
+    parser.add_argument('-u', '--url', type=str, help='Page URL to analyze')
+    parser.add_argument('--test', action='store_true', help='Run test mode to compare data with previous period')
+    parser.add_argument('-o', '--output', type=str, help='Output file for JSON or insights')
+    parser.add_argument('--run', action='store_true', help='Start the process and run the schedule')
+    parser.add_argument('--debug', action='store_true', help='Enable debug logging')
+    args = parser.parse_args()
 
-    ga4_extractor.authenticate()
-    gsc_extractor.authenticate()
+    if args.debug:
+        logger.level('DEBUG')
+    else:
+        logger.level('INFO')
 
-    ga4_data = ga4_extractor.extract_data(
-        CONFIG.property_id,
-        CONFIG.page_url,
-        CONFIG.start_date,
-        CONFIG.end_date
-    )
+    url_processor = URLProcessor(CONFIG)
 
-    gsc_data = gsc_extractor.extract_data(
-        CONFIG.site_url,
-        CONFIG.page_url,
-        CONFIG.start_date,
-        CONFIG.end_date
-    )
+    if args.run:
+        url_processor.run()
+    elif args.test and args.url and args.output:
+        insights = url_processor.run_test(args.url)
+        with open(args.output, 'w') as f:
+            f.write(insights)
+    elif args.url and args.output:
+        page_full_url = args.url
+        data = url_processor.extract_data(page_full_url)
+        with open(args.output, 'w') as f:
+            json.dump(data, f, indent=4)
+    elif args.url and not args.output:
+        logger.warning("No output file specified, data will not be saved.")
+    else:
+        logger.error("Please provide either -u/--url or --run argument")
 
-    # Combine the data
-    combined_data = {**ga4_data, **gsc_data}
-
-    print(f"Data for {CONFIG.page_url}:")
-    print(f"Ranking keywords: {combined_data['ranking_keywords']}")
-    print(f"Previous pages: {combined_data['previous_pages']}")
-    print(f"Next pages: {combined_data['next_pages']}")
-    print(f"Bounce rate: {combined_data['bounce_rate']}")
-    print(f"Top referring sites: {combined_data['referring_sites']}")
 
 if __name__ == "__main__":
     main()

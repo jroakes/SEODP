@@ -167,3 +167,12 @@ cython_debug/
 
 # Other
 approach.md
+
+# Env
+venv_seodp/
+
+all_code.txt
+
+#Jupyter
+.ipynb_checkpoints/
+*.ipynb

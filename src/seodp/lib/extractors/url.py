@@ -1,9 +1,9 @@
 """ Extract SEO content and metadata from a given URL using ScrapingBee API. """
 
-
 import json
 import logging
-from typing import Dict, Union
+from typing import Dict, Union, List
+from bs4 import BeautifulSoup
 
 from scrapingbee import ScrapingBeeClient
 from trafilatura import extract
@@ -42,9 +42,10 @@ class SEOContentExtractor(DataExtractor):
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
     }
 
-    def __init__(self, api_key: str):
+    def __init__(self, config):
         super().__init__()
-        self.api_key = api_key
+        self.config = config
+        self.api_key = config.api['scrapingbee_api_key']
         self.client = None
 
     def authenticate(self):
@@ -84,12 +85,20 @@ class SEOContentExtractor(DataExtractor):
             return {
                 "clean_content": clean_content,
                 "metadata": metadata,
+                "word_count": self._get_word_count(clean_content),
+                "heading_structure": self._get_heading_structure(raw_html),
+                "images": self._get_images(raw_html),
+                "schema_markup": self._get_schema_markup(raw_html)
             }
         
         logger.error(f"ScrapingBee error: {response.status_code}")
         return {
             "clean_content": None,
             "metadata": None,
+            "word_count": None,
+            "heading_structure": None,
+            "images": None,
+            "schema_markup": None
         }
 
     def _extract_clean_content(self, url_data: Dict) -> Union[str, None]:
@@ -118,6 +127,51 @@ class SEOContentExtractor(DataExtractor):
 
     @staticmethod
     def _format_content(content: str) -> str:
-        """Format the extracted content."""
-        # Implement any necessary content formatting here
-        return content.strip()
+        """Format the extracted content to clean text. Removing any HTML, Scripts, 
+        non-alphanumeric characters, execcesive whitespaces, etc."""
+
+        # Remove HTML tags
+        content = BeautifulSoup(content, 'html.parser').get_text()
+
+        # Remove non-alphanumeric characters
+        content = ''.join(e for e in content if e.isalnum() or e.isspace())
+
+        # Remove excessive whitespaces
+        content = ' '.join(content.split())
+
+        return content
+
+    def _get_word_count(self, content: str) -> int:
+        """Get word count from clean content."""
+        return len(content.split())
+
+    def _get_heading_structure(self, raw_html: str) -> Dict[str, int]:
+        """Get heading structure from raw HTML."""
+        soup = BeautifulSoup(raw_html, 'html.parser')
+        headings = {'h1': 0, 'h2': 0, 'h3': 0, 'h4': 0, 'h5': 0, 'h6': 0}
+        for tag in soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+            headings[tag.name] += 1
+        return headings
+
+    def _get_images(self, raw_html: str) -> List[Dict[str, str]]:
+        """Get images from raw HTML."""
+        soup = BeautifulSoup(raw_html, 'html.parser')
+        images = []
+        for img in soup.find_all('img'):
+            images.append({
+                'src': img.get('src', ''),
+                'alt': img.get('alt', '')
+            })
+        return images
+
+    def _get_schema_markup(self, raw_html: str) -> List[Dict]:
+        """Get schema markup from raw HTML."""
+        soup = BeautifulSoup(raw_html, 'html.parser')
+        schema_tags = soup.find_all('script', type='application/ld+json')
+        schema_data = []
+        for tag in schema_tags:
+            try:
+                schema_data.append(json.loads(tag.string))
+            except:
+                pass
+        return schema_data
