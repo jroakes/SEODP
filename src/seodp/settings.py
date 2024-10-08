@@ -28,6 +28,9 @@ CONFIG = DotDict({
     'site_url': 'https://locomotive.agency/',
     'property_id': '281603923',
     'page_url': 'https://locomotive.agency/local-seo/how-to-handle-local-seo-without-a-physical-address/',
+    'test_sitemap_urls': ['https://locomotive.agency/local-seo/how-to-handle-local-seo-without-a-physical-address/', 
+                     'https://locomotive.agency/services/technical-seo/',
+                     'https://locomotive.agency/'],
     'start_date': '2024-07-01',
     'end_date': '2024-07-31',
     'low_traffic_threshold': 100,
@@ -40,7 +43,7 @@ CONFIG = DotDict({
         'service_account_file': get_required_env('SERVICE_ACCOUNT_FILE_PATH'),
         'subject_email': get_required_env('SUBJECT_EMAIL'),
         'scrapingbee_api_key': get_required_env('SCRAPINGBEE_API_KEY'),
-        'gemini_api_key': get_required_env('GEMINI_API_KEY')
+        'gemini_api_key': get_required_env('GEMINI_API_KEY'),
+        'sendgrid_api_key': get_required_env('SENDGRID_API_KEY'),
     }
 })
-

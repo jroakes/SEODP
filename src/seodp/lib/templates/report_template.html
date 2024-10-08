@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SEO Performance Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>SEO Performance Report</h1>
+    <p>Total URLs analyzed: {{ insights.total_urls_analyzed }}</p>
+
+    <h2>Traffic Summary</h2>
+    <p>{{ insights.traffic_summary }}</p>
+
+    <h2>Ranking Summary</h2>
+    <p>{{ insights.ranking_summary }}</p>
+
+    <h2>Page Speed Summary</h2>
+    <p>{{ insights.page_speed_summary }}</p>
+
+    <h2>Top Critical Issues</h2>
+    <p>{{ insights.critical_issues }}</p>
+
+    <h2>Top Opportunities</h2>
+    <p>{{ insights.top_opportunities }}</p>
+
+    <h2>Important URL-Specific Insights</h2>
+    <p>{{ insights.important_url_insights }}</p>
+</body>
+</html>

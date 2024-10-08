@@ -1,41 +1,30 @@
-"""Gemini API client."""
+"""Gemini API client"""
 
-import json
 import google.generativeai as genai
+from google.generativeai import GenerativeModel, GenerationConfig
+from lib.logging import logger
+from lib.errors import GeminiAPIError
 
 class GeminiAPIClient:
     def __init__(self, config):
         self.config = config
         genai.configure(api_key=config.api['gemini_api_key'])
-        self.model = genai.GenerativeModel(model_name=config.gemini_model, tools='code_execution')
+        self.model = GenerativeModel(model_name=config.gemini_model)
 
-    @staticmethod
-    def _maybe_json_dump(data, indent=4):
-        if isinstance(data, dict):
-            return json.dumps(data, indent=indent)
-        return data
-    
-
-    def generate_insights(self, current_data, prior_data):
-        """
-        Generate insights from the changes between the current and prior data sets.
-
-        Args:
-            current_data (dict): The current JSON data set.
-            prior_data (dict): The prior JSON data set.
-
-        Returns:
-            str: A string containing the generated insights in Markdown format.
-        """
-        current_data_json = self._maybe_json_dump(current_data)
-        prior_data_json = self._maybe_json_dump(prior_data)
-
-        prompt = (
-            f'Current data:\n\n```json\n{current_data_json}\n```\n\n'
-            f'Prior data:\n\n```json\n{prior_data_json}\n```\n\n'
-            'Analyze and compare the current and prior data sets, and provide any interesting insights or observations '
-            'regarding the changes between the two in Markdown format. Focus on identifying significant differences, trends, or patterns.'
+    def generate_content(self, prompt, response_schema=None, temperature=0.2, top_p=1, top_k=1, max_output_tokens=2048):
+        """Generate content using the Gemini API."""
+        generation_config = GenerationConfig(
+            temperature=temperature,
+            top_p=top_p,
+            top_k=top_k,
+            max_output_tokens=max_output_tokens,
+            response_mime_type="application/json", 
+            response_schema=response_schema
         )
-        response = self.model.generate_content(prompt)
-        return response.text
-    
+
+        try:
+            response = self.model.generate_content(prompt, generation_config=generation_config)
+            return response.text
+        except Exception as e:
+            logger.error(f"Error generating content with Gemini API: {str(e)}")
+            raise GeminiAPIError(f"Error generating content with Gemini API: {str(e)}")

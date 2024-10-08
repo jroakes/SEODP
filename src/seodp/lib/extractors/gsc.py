@@ -3,18 +3,20 @@
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from lib.extractors.base import DataExtractor
+from typing import Dict
 
 class GSCExtractor(DataExtractor):
-    def __init__(self, config):
+    def __init__(self, config: Dict):
         super().__init__()
         self.config = config
         self.service_account_file = config.api['service_account_file']
         self.subject_email = config.api['subject_email']
         self.credentials = None
         self.search_console_service = None
-        self.top_n = config.top_n  # Read top_n parameter from config
+        self.top_n = config.top_n
 
-    def authenticate(self):
+    def authenticate(self) -> None:
+        """Authenticate with Google Search Console API."""
         self.credentials = service_account.Credentials.from_service_account_file(
             self.service_account_file,
             scopes=['https://www.googleapis.com/auth/webmasters.readonly'],
@@ -23,10 +25,10 @@ class GSCExtractor(DataExtractor):
         self.search_console_service = build('searchconsole', 'v1', credentials=self.credentials)
         self.is_authenticated = True
 
-    def extract_data(self, page_url):
+    def extract_data(self, page_url: str) -> Dict:
+        """Extract Google Search Console data for a given page URL."""
         self.check_authentication()
 
-        # Query for overall metrics
         overall_request = {
             'startDate': self.config.start_date,
             'endDate': self.config.end_date,
@@ -41,12 +43,11 @@ class GSCExtractor(DataExtractor):
         }
         overall_response = self.search_console_service.searchanalytics().query(siteUrl=self.config.site_url, body=overall_request).execute()
 
-        # Query for top queries
         query_request = {
             'startDate': self.config.start_date,
             'endDate': self.config.end_date,
             'dimensions': ['query'],
-            'rowLimit': self.top_n,  # Limit top queries to top_n
+            'rowLimit': self.top_n,
             'dimensionFilterGroups': [{
                 'filters': [{
                     'dimension': 'page',
@@ -71,13 +72,13 @@ class GSCExtractor(DataExtractor):
                     "impressions": row['impressions'],
                     "ctr": row['ctr'],
                     "position": row['position']
-                } for row in query_response.get('rows', [])[:self.top_n]  # Limit ranking_keywords to top_n
+                } for row in query_response.get('rows', [])[:self.top_n]
             ],
             "top_no_click_queries": [
                 row['keys'][0] for row in sorted(
                     query_response.get('rows', []),
                     key=lambda x: x['impressions'] - x['clicks'],
                     reverse=True
-                )[:self.top_n]  # Limit top_no_click_queries to top_n
+                )[:self.top_n]
             ]
         }

@@ -1,17 +1,21 @@
+"""This module contains the Page Speed Insights (PSI) extractor."""
+
 import requests
 from lib.extractors.base import DataExtractor
+from typing import Dict
 
 class PSIExtractor(DataExtractor):
-    def __init__(self, config):
+    def __init__(self, config: Dict):
         super().__init__()
         self.config = config
         self.api_key = config.api['scrapingbee_api_key']
 
-    def authenticate(self):
+    def authenticate(self) -> None:
         """No authentication required for this extractor."""
         self.is_authenticated = True
 
-    def extract_data(self, url):
+    def extract_data(self, url: str) -> Dict:
+        """Extract Page Speed Insights data for a given URL."""
         self.check_authentication()
 
         desktop_data = self._fetch_data(url, "DESKTOP")
@@ -22,7 +26,8 @@ class PSIExtractor(DataExtractor):
             "mobile": mobile_data
         }
 
-    def _fetch_data(self, url, strategy):
+    def _fetch_data(self, url: str, strategy: str) -> Dict:
+        """Fetch Page Speed Insights data for a given URL and strategy."""
         api_url = f"https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={url}&strategy={strategy}"
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
@@ -39,7 +44,7 @@ class PSIExtractor(DataExtractor):
             return {
                 "largest_contentful_paint": audits.get("largest-contentful-paint", {}).get("numericValue"),
                 "cumulative_layout_shift": audits.get("cumulative-layout-shift", {}).get("numericValue"),
-                "interaction_to_next_paint": audits.get("interactive", {}).get("numericValue"),  # Using TTI as a proxy for INP
+                "interaction_to_next_paint": audits.get("interactive", {}).get("numericValue"),
                 "first_contentful_paint": audits.get("first-contentful-paint", {}).get("numericValue"),
                 "time_to_interactive": audits.get("interactive", {}).get("numericValue"),
                 "speed_index": audits.get("speed-index", {}).get("numericValue"),

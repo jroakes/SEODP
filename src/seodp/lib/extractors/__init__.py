@@ -1,12 +1,18 @@
+"""Module that provides a unified interface for extracting data from various sources."""
+
 from lib.extractors.url import SEOContentExtractor
 from lib.extractors.gsc import GSCExtractor
 from lib.extractors.ga4 import GA4Extractor
 from lib.extractors.psi import PSIExtractor
 from copy import deepcopy
-
+from typing import Dict
 
 class ExtractorTools:
-    def __init__(self, config):
+    """
+    A class that provides a unified interface for extracting data from various sources.
+    """
+
+    def __init__(self, config: Dict):
         self.config = config
         self.tools = {
             'Google Analytics': GA4Extractor,
@@ -15,7 +21,18 @@ class ExtractorTools:
             'Page Speed Insights': PSIExtractor
         }
 
-    def extract_data(self, url, start_date=None, end_date=None):
+    def extract_data(self, url: str, start_date: str = None, end_date: str = None) -> Dict[str, Dict]:
+        """
+        Extract data from various sources for a given URL and date range.
+
+        Args:
+            url (str): The URL for which data needs to be extracted.
+            start_date (str, optional): The start date for the date range. Defaults to None.
+            end_date (str, optional): The end date for the date range. Defaults to None.
+
+        Returns:
+            Dict[str, Dict]: A dictionary containing the extracted data, where the keys are the source names and the values are dictionaries containing the extracted data for that source.
+        """
         data = {}
         config = deepcopy(self.config)
 

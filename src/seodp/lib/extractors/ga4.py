@@ -3,18 +3,20 @@ from google.analytics.data_v1beta import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import RunReportRequest, DateRange, Metric, Dimension, Filter, FilterExpression
 from lib.extractors.base import DataExtractor
 from urllib.parse import urlparse, urlunparse
+from typing import Dict
 
 class GA4Extractor(DataExtractor):
-    def __init__(self, config):
+    def __init__(self, config: Dict):
         super().__init__()
         self.config = config
         self.service_account_file = config.api['service_account_file']
         self.subject_email = config.api['subject_email']
         self.credentials = None
         self.ga4_client = None
-        self.top_n = config.top_n  # Read top_n parameter from config
+        self.top_n = config.top_n
 
-    def authenticate(self):
+    def authenticate(self) -> None:
+        """Authenticate with Google Analytics 4 API."""
         self.credentials = service_account.Credentials.from_service_account_file(
             self.service_account_file,
             scopes=['https://www.googleapis.com/auth/analytics.readonly'],
@@ -23,16 +25,16 @@ class GA4Extractor(DataExtractor):
         self.ga4_client = BetaAnalyticsDataClient(credentials=self.credentials)
         self.is_authenticated = True
 
-    def extract_data(self, page_full_url):
+    def extract_data(self, page_full_url: str) -> Dict:
+        """Extract Google Analytics 4 data for a given page URL."""
         self.check_authentication()
 
-        # Transform full-qualified URL into only the path part without query parameters
         page_path = urlparse(page_full_url).path
         page_path = urlunparse(("", "", page_path, "", "", ""))
 
         print(f"Extracting GA4 data for page: {page_path}")
 
-        def run_report(metrics, dimensions, filters=None):
+        def run_report(metrics: list, dimensions: list, filters: FilterExpression = None) -> dict:
             request = RunReportRequest(
                 property=f"properties/{self.config.property_id}",
                 dimensions=[Dimension(name=d) for d in dimensions],
@@ -42,8 +44,6 @@ class GA4Extractor(DataExtractor):
             )
             response = self.ga4_client.run_report(request)
             return response
-
-        # --- Reports with organic filter ---
 
         organic_filter = FilterExpression(
             and_group={
@@ -88,8 +88,6 @@ class GA4Extractor(DataExtractor):
             filters=organic_filter
         )
 
-        # --- User demographics report (without organic filter) ---
-
         user_demographics = run_report(
             metrics=["totalUsers"],
             dimensions=["userAgeBracket", "userGender", "country"],
@@ -100,8 +98,6 @@ class GA4Extractor(DataExtractor):
                 )
             )
         )
-
-        # --- Remaining reports with organic filter ---
 
         device_categories = run_report(
             metrics=["totalUsers"],

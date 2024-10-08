@@ -42,17 +42,16 @@ class SEOContentExtractor(DataExtractor):
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
     }
 
-    def __init__(self, config):
+    def __init__(self, config: Dict):
         super().__init__()
         self.config = config
         self.api_key = config.api['scrapingbee_api_key']
         self.client = None
 
-    def authenticate(self):
+    def authenticate(self) -> None:
         """Authenticate with ScrapingBee API."""
         try:
             self.client = ScrapingBeeClient(api_key=self.api_key)
-            # We could potentially make a test request here to verify the API key
             self.is_authenticated = True
         except Exception as e:
             logger.error(f"Authentication failed: {str(e)}")
@@ -62,42 +61,45 @@ class SEOContentExtractor(DataExtractor):
         """Extract SEO content and metadata from a given URL."""
         self.check_authentication()
 
-        response = self.client.get(
-            url,
-            headers=self.HEADERS,
-            params={
-                "block_ads": "True",
-                "json_response": "True",
-                "wait_browser": "load",
-                "js_scenario": {
-                    "strict": False,
-                    "instructions": [{"evaluate": self.READABILITY_JS}],
+        try:
+            with self.client.get(
+                url,
+                headers=self.HEADERS,
+                params={
+                    "block_ads": "True",
+                    "json_response": "True",
+                    "wait_browser": "load",
+                    "js_scenario": {
+                        "strict": False,
+                        "instructions": [{"evaluate": self.READABILITY_JS}],
+                    },
                 },
-            },
-        )
+            ) as response:
+                if response.status_code == 200:
+                    url_data = response.json()
+                    clean_content = self._extract_clean_content(url_data)
+                    raw_html = self._extract_raw_html(url_data)
+                    metadata = self._extract_metadata(raw_html)
 
-        if response.status_code == 200:
-            url_data = response.json()
-            clean_content = self._extract_clean_content(url_data)
-            raw_html = self._extract_raw_html(url_data)
-            metadata = self._extract_metadata(raw_html)
-            
-            return {
-                "clean_content": clean_content,
-                "metadata": metadata,
-                "word_count": self._get_word_count(clean_content),
-                "heading_structure": self._get_heading_structure(raw_html),
-                "images": self._get_images(raw_html),
-                "schema_markup": self._get_schema_markup(raw_html)
-            }
-        
-        logger.error(f"ScrapingBee error: {response.status_code}")
+                    return {
+                        "clean_content": clean_content,
+                        "metadata": metadata,
+                        "word_count": self._get_word_count(clean_content),
+                        "heading_structure": self._get_heading_structure(raw_html),
+                        "image_count": self._get_image_count(raw_html),
+                        "schema_markup": self._get_schema_markup(raw_html)
+                    }
+
+                logger.error(f"ScrapingBee error: {response.status_code}")
+        except Exception as e:
+            logger.error(f"Error extracting data: {str(e)}")
+
         return {
             "clean_content": None,
             "metadata": None,
             "word_count": None,
             "heading_structure": None,
-            "images": None,
+            "image_count": None,
             "schema_markup": None
         }
 
@@ -153,16 +155,10 @@ class SEOContentExtractor(DataExtractor):
             headings[tag.name] += 1
         return headings
 
-    def _get_images(self, raw_html: str) -> List[Dict[str, str]]:
-        """Get images from raw HTML."""
+    def _get_image_count(self, raw_html: str) -> int:
+        """Get the count of images from raw HTML."""
         soup = BeautifulSoup(raw_html, 'html.parser')
-        images = []
-        for img in soup.find_all('img'):
-            images.append({
-                'src': img.get('src', ''),
-                'alt': img.get('alt', '')
-            })
-        return images
+        return len(soup.find_all('img'))
 
     def _get_schema_markup(self, raw_html: str) -> List[Dict]:
         """Get schema markup from raw HTML."""
