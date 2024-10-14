@@ -40,7 +40,7 @@ class URLManager:
 
         return all_insights
 
-    def get_urls(self) -> List[str]:
+    def _get_urls(self) -> List[str]:
         if hasattr(self.config, 'sitemap_urls') and self.config.sitemap_urls:
             logger.info("Using sitemap URLs from configuration.")
             return self.config.sitemap_urls
@@ -50,6 +50,7 @@ class URLManager:
         else:
             raise ValueError("No sitemap URLs or file provided in configuration.")
 
+    @staticmethod
     def extract_urls_from_sitemap(sitemap_source: str) -> List[str]:
         urls = []
         try:

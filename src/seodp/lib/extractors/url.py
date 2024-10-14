@@ -123,19 +123,23 @@ class URLExtractor(DataExtractor):
     def _extract_metadata(self, raw_html: str) -> Union[Dict, None]:
         """Extract metadata using Trafilatura."""
         if raw_html:
-            metadata = extract(raw_html, output_format="json", include_comments=False, with_metadata=True )
-            # Remove text and raw_text keys from metadata
+            metadata = extract(raw_html, output_format="json", include_comments=False, with_metadata=True)
 
             if isinstance(metadata, str):
-                meta_data_dict = json.loads(metadata)
+                try:
+                    meta_data_dict = json.loads(metadata)
 
-                # We already have the clean content, so remove text and raw_text keys
-                if 'text' in meta_data_dict:
-                    del meta_data_dict['text']
-                if 'raw_text' in meta_data_dict:
-                    del meta_data_dict['raw_text']
-            
-                return meta_data_dict
+                    # We already have the clean content, so remove text and raw_text keys
+                    if 'text' in meta_data_dict:
+                        del meta_data_dict['text']
+                    if 'raw_text' in meta_data_dict:
+                        del meta_data_dict['raw_text']
+                    
+                    return meta_data_dict
+                except json.JSONDecodeError as e:
+                    logger.error(f"Error decoding metadata JSON: {e}")
+                    return None
+
 
         return None
 
