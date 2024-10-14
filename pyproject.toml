@@ -20,6 +20,8 @@ scrapingbee = "^2.0.1"
 loguru = "^0.7.2"
 python-dotenv = "^1.0.1"
 apscheduler = "^3.10.4"
+pyyaml = "^6.0.2"
+google-generativeai = "^0.8.3"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"

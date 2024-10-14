@@ -8,7 +8,7 @@ class PSIExtractor(DataExtractor):
     def __init__(self, config: Dict):
         super().__init__()
         self.config = config
-        self.api_key = config.api['scrapingbee_api_key']
+        self.api_key = config.api['psi_api_key']
 
     def authenticate(self) -> None:
         """No authentication required for this extractor."""
@@ -28,7 +28,13 @@ class PSIExtractor(DataExtractor):
 
     def _fetch_data(self, url: str, strategy: str) -> Dict:
         """Fetch Page Speed Insights data for a given URL and strategy."""
-        api_url = f"https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={url}&strategy={strategy}"
+
+        api_key = self.api_key
+
+        if not api_key:
+            raise ValueError("API key not found. Please set the PSI_API_KEY environment variable.")
+        
+        api_url = f"https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={url}&strategy={strategy}&key={api_key}"
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
         }

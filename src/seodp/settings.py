@@ -41,6 +41,7 @@ CONFIG.api = DotDict({
     'subject_email': get_required_env('SUBJECT_EMAIL'),
     'scrapingbee_api_key': get_required_env('SCRAPINGBEE_API_KEY'),
     'gemini_api_key': get_required_env('GEMINI_API_KEY'),
+    'psi_api_key': get_required_env('PSI_API_KEY'),
     'mailtrap_login': get_required_env('MAILTRAP_LOGIN'),
     'mailtrap_password': get_required_env('MAILTRAP_PASSWORD'),
     'mailtrap_sender_email': get_required_env('MAILTRAP_SENDER_EMAIL'),
