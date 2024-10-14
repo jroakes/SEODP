@@ -17,31 +17,33 @@ The SEO Data Platform is a comprehensive tool designed to automate the collectio
 ## Installation
 
 1. Clone the repository:
-git clone https://github.com/yourusername/seo-data-platform.git cd seo-data-platform
-
+```
+git clone https://github.com/jroakes/SEODP.git 
+cd SEODP
+```
 
 2. Install the required dependencies:
-pip install -r requirements.txt
-
+`pip install -r requirements.txt`
+You can also use poetry.
 
 3. Set up the configuration file:
-- Copy `seodpconfig.yaml.example` to `seodpconfig.yaml`
 - Edit `seodpconfig.yaml` with your specific settings
 
 4. Set up environment variables:
 - Create a `.env` file in the project root
 - Add the required API keys and credentials (see Configuration section)
 
+
 ## Usage
 
 To start the SEO Data Platform:
 
-python src/seodp/main.py --start
+`python src/seodp/main.py --start`
 
 
 For other command-line options:
 
-python src/seodp/main.py --help
+`python src/seodp/main.py --help`
 
 
 ## Configuration
@@ -58,6 +60,8 @@ Set the following environment variables in your `.env` file:
 - `MAILTRAP_PASSWORD`: Your Mailtrap password
 - `MAILTRAP_SENDER_EMAIL`: Sender email for Mailtrap
 - `RECIPIENT_EMAIL`: Recipient email for reports
+
+See `.env.example` example file.
 
 ### Configuration File
 
