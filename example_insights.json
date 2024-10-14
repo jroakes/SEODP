@@ -1,0 +1,64 @@
+{
+    "total_urls_analyzed": 3,
+    "significant_traffic_changes": [
+        {
+            "current_value": 166,
+            "description": "Decrease in organic users suggests a decline in website reach.",
+            "details": "The number of organic users has decreased from 193 to 166, indicating a potential decline in the website's reach and visibility among its target audience. This decrease could be attributed to various factors, such as changes in search engine algorithms, increased competition, or a decline in the website's overall authority.",
+            "importance_score": 85,
+            "prior_value": 193,
+            "change_absolute": -27,
+            "change_percentage": -13.989637305699482,
+            "url": "https://locomotive.agency/"
+        }
+    ],
+    "significant_keyword_changes": [],
+    "significant_content_changes": [
+        {
+            "current_value": 698,
+            "description": "Addition of content to the website.",
+            "details": "The website now has a word count of 698, whereas this data was not available for the prior period. This suggests that new content has been added to the site, which could be a blog post, new service page, or other types of content.",
+            "importance_score": 70,
+            "prior_value": 0,
+            "change_absolute": 698,
+            "change_percentage": 100,
+            "url": "https://locomotive.agency/"
+        }
+    ],
+    "significant_changes_to_prior_or_next_pages": [],
+    "significant_changes_to_referral_sources": [],
+    "significant_changes_to_organic_search_sources": [
+        {
+            "current_value": 231,
+            "description": "Decrease in organic sessions indicates potential issues with website ranking or content relevance.",
+            "details": "Organic sessions have decreased from 257 to 231, indicating a potential issue with the website's ranking in search results or the relevance of its content to user queries. It's important to investigate the reasons behind this decline and take steps to improve organic visibility.",
+            "importance_score": 80,
+            "prior_value": 257,
+            "change_absolute": -26,
+            "change_percentage": -10.116731517509727,
+            "url": "https://locomotive.agency/"
+        }
+    ],
+    "causal_relationships_between_changes": [
+        {
+            "current_value": 1259,
+            "description": "Total impressions have nearly doubled.",
+            "details": "Despite the increase in impressions, the click-through rate has decreased, indicating that the site's visibility may have improved, but the titles and meta descriptions are not enticing enough to generate clicks. It's crucial to optimize these elements to improve click-through rates.",
+            "importance_score": 75,
+            "prior_value": 657,
+            "change_absolute": 602,
+            "change_percentage": 91.62861491628614,
+            "url": "https://locomotive.agency/services/technical-seo/"
+        },
+        {
+            "current_value": 60.354116142857144,
+            "description": "Average time on page has decreased.",
+            "details": "While still above average, this decrease could indicate that users are finding the content less engaging than before. It's worth reviewing the content and considering updates or improvements to increase user engagement.",
+            "importance_score": 60,
+            "prior_value": 103.60027892307691,
+            "change_absolute": -43.24616278021977,
+            "change_percentage": -41.74328798123217,
+            "url": "https://locomotive.agency/services/technical-seo/"
+        }
+    ]
+}

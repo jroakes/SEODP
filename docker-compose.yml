@@ -1,0 +1,11 @@
+version: '3'
+services:
+  seodp:
+    build: .
+    volumes:
+      - .:/app
+      - ./.env:/app/.env
+      - ./seodpconfig.yaml:/app/seodpconfig.yaml
+    environment:
+      - SCHEDULE=${SCHEDULE:-monthly}
+    command: python src/seodp/main.py --start

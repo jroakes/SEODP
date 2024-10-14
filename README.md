@@ -1,74 +1,94 @@
-# SEO Data Platform (SEODP)
+# SEO Data Platform
 
-This project is a Python-based SEO Data Platform designed to automate data extraction, analysis, and reporting for SEO purposes. It leverages various APIs and tools to gather data from sources like Google Search Console, Google Analytics 4, Page Speed Insights, and directly from URLs. The platform then uses a Large Language Model (LLM), specifically Google's Gemini, to generate insights and analysis based on the collected data.
+## Description
+
+The SEO Data Platform is a comprehensive tool designed to automate the collection, analysis, and reporting of SEO-related data. It integrates with various data sources such as Google Analytics 4, Google Search Console, and PageSpeed Insights to provide actionable insights for improving website performance and search engine rankings.
 
 ## Features
 
-* **Automated Data Extraction:** Extracts data from multiple SEO data sources.
-* **LLM-Powered Insights:** Uses Gemini to generate actionable insights and analysis.
-* **Scheduled Runs:** Supports scheduled data extraction and reporting.
-* **Data Storage:** Stores historical data for trend analysis.
-* **Customizable Reporting:** Generates reports in various formats (e.g., JSON, email).
-* **Low Traffic URL Exclusion:** Automatically excludes URLs with low traffic to focus on important pages.
-* **Sitemap Processing:** Extracts URLs from a sitemap for comprehensive analysis.
+- Automated data collection from multiple sources
+- Integration with Google Analytics 4, Google Search Console, and PageSpeed Insights
+- URL content extraction and analysis
+- LLM-powered insights generation using Google's Gemini API
+- Configurable reporting topics and significance thresholds
+- Scheduled data processing and report generation
+- Email reporting functionality
 
 ## Installation
 
 1. Clone the repository:
-   ```bash
-   git clone <repository_url>
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd SEODP
-   ```
-3. Install the required packages:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Set up a virtual environment (recommended):
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   ```
-5. Configure the `.env` file with your API keys and other settings.
+git clone https://github.com/yourusername/seo-data-platform.git cd seo-data-platform
+
+
+2. Install the required dependencies:
+pip install -r requirements.txt
+
+
+3. Set up the configuration file:
+- Copy `seodpconfig.yaml.example` to `seodpconfig.yaml`
+- Edit `seodpconfig.yaml` with your specific settings
+
+4. Set up environment variables:
+- Create a `.env` file in the project root
+- Add the required API keys and credentials (see Configuration section)
 
 ## Usage
 
-The platform can be run in different modes:
+To start the SEO Data Platform:
 
-* **Scheduled Run:**
-   ```bash
-   python src/seodp/main.py --run
-   ```
-* **Test Mode (for a single URL):**
-   ```bash
-   python src/seodp/main.py --test -u <url>
-   ```
-* **Sitemap Test Workflow:**
-   ```bash
-   python src/seodp/main.py --sitemap-test
-   ```
-* **Analyze a Single URL:**
-   ```bash
-   python src/seodp/main.py -u <url>
-   ```
+python src/seodp/main.py --start
+
+
+For other command-line options:
+
+python src/seodp/main.py --help
+
 
 ## Configuration
 
-The `settings.py` file contains the main configuration settings. The `.env` file should contain the following environment variables:
+### Environment Variables
 
-* `SERVICE_ACCOUNT_FILE_PATH`: Path to your Google service account credentials file.
-* `SUBJECT_EMAIL`: Email address associated with your Google service account.
-* `SCRAPINGBEE_API_KEY`: Your ScrapingBee API key.
-* `GEMINI_API_KEY`: Your Gemini API key.
-* `SENDGRID_API_KEY`: Your SendGrid API key.
+Set the following environment variables in your `.env` file:
 
+- `SERVICE_ACCOUNT_FILE_PATH`: Path to your Google service account JSON file
+- `SUBJECT_EMAIL`: Email address for Google API authentication
+- `SCRAPINGBEE_API_KEY`: Your ScrapingBee API key
+- `GEMINI_API_KEY`: Your Google Gemini API key
+- `MAILTRAP_LOGIN`: Your Mailtrap login
+- `MAILTRAP_PASSWORD`: Your Mailtrap password
+- `MAILTRAP_SENDER_EMAIL`: Sender email for Mailtrap
+- `RECIPIENT_EMAIL`: Recipient email for reports
+
+### Configuration File
+
+Edit `seodpconfig.yaml` to customize:
+
+- URLs to analyze
+- Reporting schedule
+- Data sources and API settings
+- Reporting topics and thresholds
+
+## Project Structure
+
+- `src/seodp/`: Main source code directory
+  - `main.py`: Entry point of the application
+  - `settings.py`: Configuration loading and management
+  - `lib/`: Core functionality modules
+    - `extractors/`: Data extraction modules for different sources
+    - `manager/`: Data processing and management modules
+    - `api/`: API client modules (e.g., Gemini, email)
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit pull requests.
+Contributions to the SEO Data Platform are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a new branch for your feature
+3. Commit your changes
+4. Push to your fork
+5. Submit a pull request
+
+Please ensure your code adheres to the project's coding standards and include tests for new functionality.
 
 ## License
-
-This project is licensed under the MIT License.
+MIT

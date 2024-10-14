@@ -1,0 +1,37 @@
+
+# General Settings
+db_file: 'seodp.db'
+gemini_model: 'gemini-1.5-pro'
+low_traffic_threshold: 100
+
+# Data Source Settings
+sitemap_file: 'https://locomotive.agency/sitemap.xml'
+schedule: 'monthly'
+site_url: 'https://locomotive.agency/'
+property_id: '281603923'
+sitemap_urls: 
+  - 'https://locomotive.agency/local-seo/how-to-handle-local-seo-without-a-physical-address/'
+  - 'https://locomotive.agency/services/technical-seo/'
+  - 'https://locomotive.agency/'
+
+
+
+# Test Data Source Settings
+test_sitemap_urls: 
+  - 'https://locomotive.agency/local-seo/how-to-handle-local-seo-without-a-physical-address/'
+  - 'https://locomotive.agency/services/technical-seo/'
+  - 'https://locomotive.agency/'
+
+
+# Email Report Settings
+report_email_subject: 'SEO Insights Report'
+report_significance_threshold: 25
+top_n: 10
+report_topics:
+  - 'Significant traffic changes'
+  - 'Significant keyword changes'
+  - 'Significant content changes'
+  - 'Significant changes to prior or next pages'
+  - 'Significant changes to referral sources'
+  - 'Significant changes to organic search sources'
+  - 'Causal relationships between changes'

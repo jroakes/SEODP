@@ -1,6 +1,8 @@
 """Settings for the SEO Data Platform."""
 
 import os
+import yaml
+from lib.exceptions import ConfigurationError
 from dotenv import load_dotenv
 
 load_dotenv()  # Load environment variables from .env file
@@ -13,9 +15,6 @@ class DotDict(dict):
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
 
-class ConfigurationError(Exception):
-    """Raised when there's a problem with the configuration."""
-    pass
 
 def get_required_env(key: str) -> str:
     """Get a required environment variable or raise an error."""
@@ -24,26 +23,26 @@ def get_required_env(key: str) -> str:
         raise ConfigurationError(f"Missing required environment variable: {key}")
     return value
 
-CONFIG = DotDict({
-    'site_url': 'https://locomotive.agency/',
-    'property_id': '281603923',
-    'page_url': 'https://locomotive.agency/local-seo/how-to-handle-local-seo-without-a-physical-address/',
-    'test_sitemap_urls': ['https://locomotive.agency/local-seo/how-to-handle-local-seo-without-a-physical-address/', 
-                     'https://locomotive.agency/services/technical-seo/',
-                     'https://locomotive.agency/'],
-    'start_date': '2024-07-01',
-    'end_date': '2024-07-31',
-    'low_traffic_threshold': 100,
-    'schedule': 'monthly',
-    'sitemap_file': 'sitemap.xml',
-    'db_file': 'seodp.db',
-    'top_n': 10,
-    'gemini_model': 'gemini-1.5-pro',  # Added setting for Gemini model
-    'api': {
-        'service_account_file': get_required_env('SERVICE_ACCOUNT_FILE_PATH'),
-        'subject_email': get_required_env('SUBJECT_EMAIL'),
-        'scrapingbee_api_key': get_required_env('SCRAPINGBEE_API_KEY'),
-        'gemini_api_key': get_required_env('GEMINI_API_KEY'),
-        'sendgrid_api_key': get_required_env('SENDGRID_API_KEY'),
-    }
+def load_config(yaml_file: str) -> DotDict:
+    """Load configuration from a YAML file."""
+    try:
+        with open(yaml_file, 'r') as f:
+            config = yaml.safe_load(f)
+            return DotDict(config)
+    except FileNotFoundError:
+        raise ConfigurationError(f"Configuration file not found: {yaml_file}")
+    except yaml.YAMLError as e:
+        raise ConfigurationError(f"Error parsing YAML file: {e}")
+
+
+CONFIG = load_config('seodpconfig.yaml')
+CONFIG.api = DotDict({
+    'service_account_file': get_required_env('SERVICE_ACCOUNT_FILE_PATH'),
+    'subject_email': get_required_env('SUBJECT_EMAIL'),
+    'scrapingbee_api_key': get_required_env('SCRAPINGBEE_API_KEY'),
+    'gemini_api_key': get_required_env('GEMINI_API_KEY'),
+    'mailtrap_login': get_required_env('MAILTRAP_LOGIN'),
+    'mailtrap_password': get_required_env('MAILTRAP_PASSWORD'),
+    'mailtrap_sender_email': get_required_env('MAILTRAP_SENDER_EMAIL'),
+    'recipient_email': get_required_env('RECIPIENT_EMAIL')
 })

@@ -1,29 +1,41 @@
+"""Email handler module for sending reports via email."""
+
 import jinja2
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
-from typing import Dict, Any
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from typing import Dict, Any, List
 from lib.logging import logger
+import os
 
 class EmailHandler:
     def __init__(self, config):
         self.config = config
-        self.sendgrid_api_key = config.api['sendgrid_api_key']
-        self.sender_email = config.sender_email
-        self.jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader('templates'))
+        self.smtp_server = "live.smtp.mailtrap.io"
+        self.port = 587
+        self.login = config.api['mailtrap_login']
+        self.password = config.api['mailtrap_password']
+        self.sender_email = config.api['mailtrap_sender_email']
+        self.recipient_email = config.api['recipient_email']
+        self.report_email_subject = config.report_email_subject
+        template_dir = os.path.join(os.path.dirname(__file__), '..', 'templates')
+        self.jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir))
 
-    def send_report(self, recipient_email: str, subject: str, report_content: str):
-        message = Mail(
-            from_email=self.sender_email,
-            to_emails=recipient_email,
-            subject=subject,
-            html_content=report_content)
+    def send_report(self, report_content: str):
+        message = MIMEMultipart()
+        message["From"] = self.sender_email
+        message["To"] = self.recipient_email
+        message["Subject"] = self.report_email_subject
+        message.attach(MIMEText(report_content, "html"))
+
         try:
-            sg = SendGridAPIClient(self.sendgrid_api_key)
-            response = sg.send(message)
-            logger.info(f"Email sent. Status Code: {response.status_code}")
+            with smtplib.SMTP(self.smtp_server, self.port) as server:
+                server.starttls()
+                server.login(self.login, self.password)
+                server.sendmail(self.sender_email, self.recipient_email, message.as_string())
+            logger.info(f"Email sent successfully to {self.recipient_email}")
         except Exception as e:
             logger.error(f"Error sending email: {e}")
-
 
     def format_report(self, aggregated_insights: Dict[str, Any]) -> str:
         template = self.jinja_env.get_template('report_template.html')
@@ -33,29 +45,28 @@ class EmailHandler:
     def _format_insights(self, insights: Dict[str, Any]) -> Dict[str, Any]:
         formatted_insights = {
             'total_urls_analyzed': insights['total_urls_analyzed'],
-            'traffic_summary': self._format_traffic_summary(insights['traffic_summary']),
-            'ranking_summary': self._format_ranking_summary(insights['ranking_summary']),
-            'page_speed_summary': self._format_page_speed_summary(insights['page_speed_summary']),
-            'critical_issues': self._format_critical_issues(insights['critical_issues']),
-            'top_opportunities': self._format_opportunities(insights['top_opportunities']),
-            'important_url_insights': self._format_important_url_insights(insights.get('important_url_insights', {}))
+            'significant_traffic_changes': self._format_changes(insights.get('significant_traffic_changes', [])),
+            'significant_keyword_changes': self._format_changes(insights.get('significant_keyword_changes', [])),
+            'significant_content_changes': self._format_changes(insights.get('significant_content_changes', [])),
+            'significant_changes_to_prior_or_next_pages': self._format_changes(insights.get('significant_changes_to_prior_or_next_pages', [])),
+            'significant_changes_to_referral_sources': self._format_changes(insights.get('significant_changes_to_referral_sources', [])),
+            'significant_changes_to_organic_search_sources': self._format_changes(insights.get('significant_changes_to_organic_search_sources', [])),
+            'causal_relationships_between_changes': self._format_changes(insights.get('causal_relationships_between_changes', []))
         }
         return formatted_insights
 
-    def _format_traffic_summary(self, traffic_summary: Dict[str, int]) -> str:
-        return f"Increased: {traffic_summary['increased']}, Decreased: {traffic_summary['decreased']}, No Change: {traffic_summary['no_change']}"
-
-    def _format_ranking_summary(self, ranking_summary: Dict[str, int]) -> str:
-        return f"Improved: {ranking_summary['improved']}, Declined: {ranking_summary['declined']}, No Change: {ranking_summary['no_change']}"
-
-    def _format_page_speed_summary(self, page_speed_summary: Dict[str, int]) -> str:
-        return f"Improved: {page_speed_summary['improved']}, Declined: {page_speed_summary['declined']}, No Change: {page_speed_summary['no_change']}"
-
-    def _format_critical_issues(self, critical_issues: Dict[str, int]) -> str:
-        return ', '.join([f"{issue}: {count}" for issue, count in critical_issues.items()])
-
-    def _format_opportunities(self, opportunities: Dict[str, int]) -> str:
-        return ', '.join([f"{opportunity}: {count}" for opportunity, count in opportunities.items()])
-
-    def _format_important_url_insights(self, important_url_insights: Dict[str, str]) -> str:
-        return ', '.join([f"{url}: {insight}" for url, insight in important_url_insights.items()])
+    def _format_changes(self, changes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        formatted_changes = []
+        for change in changes:
+            formatted_change = {
+                'description': change.get('description', ''),
+                'details': change.get('details', ''),
+                'importance_score': change.get('importance_score', 0),
+                'current_value': change.get('current_value', 0),
+                'prior_value': change.get('prior_value', 0),
+                'change_absolute': change.get('change_absolute', 0),
+                'change_percentage': change.get('change_percentage', 0),
+                'url': change.get('url', '')
+            }
+            formatted_changes.append(formatted_change)
+        return formatted_changes

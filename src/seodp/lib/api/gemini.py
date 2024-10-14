@@ -3,7 +3,7 @@
 import google.generativeai as genai
 from google.generativeai import GenerativeModel, GenerationConfig
 from lib.logging import logger
-from lib.errors import GeminiAPIError
+from lib.exceptions import GeminiAPIError
 
 class GeminiAPIClient:
     def __init__(self, config):

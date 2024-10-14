@@ -25,21 +25,19 @@ class GA4Extractor(DataExtractor):
         self.ga4_client = BetaAnalyticsDataClient(credentials=self.credentials)
         self.is_authenticated = True
 
-    def extract_data(self, page_full_url: str) -> Dict:
+    def extract_data(self, url: str) -> Dict:
         """Extract Google Analytics 4 data for a given page URL."""
         self.check_authentication()
 
-        page_path = urlparse(page_full_url).path
+        page_path = urlparse(url).path
         page_path = urlunparse(("", "", page_path, "", "", ""))
-
-        print(f"Extracting GA4 data for page: {page_path}")
 
         def run_report(metrics: list, dimensions: list, filters: FilterExpression = None) -> dict:
             request = RunReportRequest(
                 property=f"properties/{self.config.property_id}",
                 dimensions=[Dimension(name=d) for d in dimensions],
                 metrics=[Metric(name=m) for m in metrics],
-                date_ranges=[DateRange(start_date=self.config.start_date, end_date=self.config.end_date)],
+                date_ranges=[DateRange(start_date=self.start_date, end_date=self.end_date)],
                 dimension_filter=filters
             )
             response = self.ga4_client.run_report(request)
@@ -48,12 +46,6 @@ class GA4Extractor(DataExtractor):
         organic_filter = FilterExpression(
             and_group={
                 "expressions": [
-                    FilterExpression(
-                        filter=Filter(
-                            field_name="sessionSource",
-                            string_filter={"value": "google"}
-                        )
-                    ),
                     FilterExpression(
                         filter=Filter(
                             field_name="sessionMedium",
@@ -68,6 +60,13 @@ class GA4Extractor(DataExtractor):
                     )
                 ]
             }
+        )
+
+        # Added organic sessions, organic users, and organic new users
+        organic_metrics = run_report(
+            metrics=["sessions", "totalUsers", "newUsers"],
+            dimensions=[],
+            filters=organic_filter
         )
 
         bounce_rate = run_report(
@@ -120,13 +119,7 @@ class GA4Extractor(DataExtractor):
                         FilterExpression(
                             filter=Filter(
                                 field_name="pageReferrer",
-                                string_filter={"value": page_full_url}
-                            )
-                        ),
-                        FilterExpression(
-                            filter=Filter(
-                                field_name="sessionSource",
-                                string_filter={"value": "google"}
+                                string_filter={"value": url}
                             )
                         ),
                         FilterExpression(
@@ -146,10 +139,22 @@ class GA4Extractor(DataExtractor):
             filters=organic_filter
         )
 
+
+        revenue = run_report(
+            metrics=["totalRevenue"],
+            dimensions=[],
+            filters=organic_filter
+        )
+
         return {
+            "organic_sessions": organic_metrics.rows[0].metric_values[0].value if organic_metrics.rows else None,
+            "organic_users": organic_metrics.rows[0].metric_values[1].value if organic_metrics.rows else None,
+            "organic_new_users": organic_metrics.rows[0].metric_values[2].value if organic_metrics.rows else None,
             "bounce_rate": bounce_rate.rows[0].metric_values[0].value if bounce_rate.rows else None,
             "referring_sites": [row.dimension_values[0].value for row in referring_sites.rows[:self.top_n]],
             "avg_time_on_page": avg_time_on_page.rows[0].metric_values[0].value if avg_time_on_page.rows else None,
+            "engagement_rate": engagement_rate.rows[0].metric_values[0].value if engagement_rate.rows else None,
+            "revenue": revenue.rows[0].metric_values[0].value if revenue.rows else None,           
             "user_demographics": [
                 {
                     "age": row.dimension_values[0].value,
@@ -162,7 +167,7 @@ class GA4Extractor(DataExtractor):
                 row.dimension_values[0].value: row.metric_values[0].value
                 for row in device_categories.rows
             },
-            "pages_leading_to": [
+            "pages_visited_prior": [
                 {
                     "page": row.dimension_values[0].value,
                     "views": row.metric_values[0].value
@@ -173,6 +178,5 @@ class GA4Extractor(DataExtractor):
                     "page": row.dimension_values[0].value,
                     "views": row.metric_values[0].value
                 } for row in pages_visited_next.rows[:self.top_n]
-            ] if pages_visited_next.rows else [],
-            "engagement_rate": engagement_rate.rows[0].metric_values[0].value if engagement_rate.rows else None
+            ] if pages_visited_next.rows else []
         }

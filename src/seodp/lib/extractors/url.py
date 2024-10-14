@@ -9,11 +9,11 @@ from scrapingbee import ScrapingBeeClient
 from trafilatura import extract
 
 from lib.extractors.base import DataExtractor
-from lib.errors import AuthenticationError
+from lib.exceptions import AuthenticationError
 
 logger = logging.getLogger(__name__)
 
-class SEOContentExtractor(DataExtractor):
+class URLExtractor(DataExtractor):
     READABILITY_JS = """
     (async function main () {
       let page_content = async()=>{
@@ -123,8 +123,20 @@ class SEOContentExtractor(DataExtractor):
     def _extract_metadata(self, raw_html: str) -> Union[Dict, None]:
         """Extract metadata using Trafilatura."""
         if raw_html:
-            metadata = extract(raw_html, output_format="json", include_comments=False, with_metadata=True)
-            return json.loads(metadata) if metadata else None
+            metadata = extract(raw_html, output_format="json", include_comments=False, with_metadata=True )
+            # Remove text and raw_text keys from metadata
+
+            if isinstance(metadata, str):
+                meta_data_dict = json.loads(metadata)
+
+                # We already have the clean content, so remove text and raw_text keys
+                if 'text' in meta_data_dict:
+                    del meta_data_dict['text']
+                if 'raw_text' in meta_data_dict:
+                    del meta_data_dict['raw_text']
+            
+                return meta_data_dict
+
         return None
 
     @staticmethod

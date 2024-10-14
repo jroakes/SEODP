@@ -3,10 +3,12 @@ google-auth-oauthlib
 google-auth-httplib2
 google-api-python-client
 google-analytics-data
-sendgrid
+smtplib
 jinja2
 beautifulsoup4
 trafilatura
-scrapingbee
+scrapingbee 
 loguru
 python-dotenv
+pyyaml
+APScheduler

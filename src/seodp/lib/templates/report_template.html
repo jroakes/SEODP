@@ -1,44 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>SEO Performance Report</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Insights Report</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1, h2 {
-            color: #333;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 10px;
-        }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        h1, h2 { color: #2c3e50; }
+        .insight { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .importance { font-weight: bold; color: #e74c3c; }
+        .change { font-style: italic; color: #2980b9; }
     </style>
 </head>
 <body>
-    <h1>SEO Performance Report</h1>
+    <h1>SEO Insights Report</h1>
+    
     <p>Total URLs analyzed: {{ insights.total_urls_analyzed }}</p>
 
-    <h2>Traffic Summary</h2>
-    <p>{{ insights.traffic_summary }}</p>
-
-    <h2>Ranking Summary</h2>
-    <p>{{ insights.ranking_summary }}</p>
-
-    <h2>Page Speed Summary</h2>
-    <p>{{ insights.page_speed_summary }}</p>
-
-    <h2>Top Critical Issues</h2>
-    <p>{{ insights.critical_issues }}</p>
-
-    <h2>Top Opportunities</h2>
-    <p>{{ insights.top_opportunities }}</p>
-
-    <h2>Important URL-Specific Insights</h2>
-    <p>{{ insights.important_url_insights }}</p>
+    {% for section, changes in insights.items() if section != 'total_urls_analyzed' %}
+        <h2>{{ section|replace('_', ' ')|title }}</h2>
+        {% if changes %}
+            {% for change in changes %}
+                <div class="insight">
+                    <h3>{{ change.description }}</h3>
+                    <p>{{ change.details }}</p>
+                    <p class="importance">Importance Score: {{ change.importance_score }}</p>
+                    <p class="change">
+                        Change: {{ change.current_value }} (current) vs {{ change.prior_value }} (prior)<br>
+                        Absolute change: {{ change.change_absolute }}<br>
+                        Percentage change: {{ "%.2f"|format(change.change_percentage) }}%
+                    </p>
+                    <p>URL: {{ change.url }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No significant changes detected.</p>
+        {% endif %}
+    {% endfor %}
 </body>
 </html>

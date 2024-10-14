@@ -1,110 +1,93 @@
-"""LLM module for SEO Data Platform."""
+"""LLM module for SEO Data Platform with configurable topics and significance threshold."""
 
 import json
-from typing import Dict, Any
+from typing import Dict, Any, List
 from lib.api.gemini import GeminiAPIClient
 
 class LLMManager:
     def __init__(self, config: Dict):
         self.config = config
         self.gemini_client = GeminiAPIClient(config)
+        self.report_topics = config.get('report_topics', [])
+        self.significance_threshold = config.get('report_significance_threshold', 25)
 
     def generate_structured_insights(self, current_data: Dict[str, Any], prior_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Generates structured insights by comparing current and prior data.
-        
-        This function prepares a prompt with the current and prior data, sends it to the Gemini API,
-        and processes the response to extract structured insights.
-        
-        Args:
-            current_data: A dictionary containing the current SEO data.
-            prior_data: A dictionary containing the prior SEO data.
-
-        Returns:
-            A dictionary containing structured insights.
-        """
+        """Generates structured insights based on configured topics and significance threshold."""
         prompt = self._create_insight_prompt(current_data, prior_data)
-        response_schema = {
-            "type": "object",
-            "properties": {
-                "traffic_change": {
-                    "type": "object",
-                    "properties": {
-                        "direction": {"type": "string", "enum": ["increased", "decreased", "no_change"]},
-                        "percentage": {"type": "number"},
-                        "analysis": {"type": "string"}
-                    },
-                    "required": ["direction", "percentage", "analysis"]
-                },
-                "ranking_changes": {
-                    "type": "object",
-                    "properties": {
-                        "direction": {"type": "string", "enum": ["improved", "declined", "no_change"]},
-                        "analysis": {"type": "string"}
-                    },
-                    "required": ["direction", "analysis"]
-                },
-                "page_speed_changes": {
-                    "type": "object",
-                    "properties": {
-                        "direction": {"type": "string", "enum": ["improved", "declined", "no_change"]},
-                        "analysis": {"type": "string"}
-                    },
-                    "required": ["direction", "analysis"]
-                },
-                "critical_issues": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "type": {"type": "string"},
-                            "description": {"type": "string"}
-                        },
-                        "required": ["type", "description"]
-                    }
-                },
-                "opportunities": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "type": {"type": "string"},
-                            "description": {"type": "string"}
-                        },
-                        "required": ["type", "description"]
-                    }
-                },
-                "overall_analysis": {"type": "string"}
-            },
-            "required": ["traffic_change", "ranking_changes", "page_speed_changes", "critical_issues", "opportunities", "overall_analysis"]
-        }
+        response_schema = self._create_response_schema()
         response = self.gemini_client.generate_content(prompt, response_schema=response_schema)
-        return json.loads(response)
+        insights = json.loads(response)
+        
+        # Calculate change_percentage and change_absolute for each insight
+        for topic in insights:
+            for insight in insights[topic]:
+                if 'prior_value' in insight and 'current_value' in insight:
+                    insight['change_percentage'] = self._calculate_change_percentage(insight['prior_value'], insight['current_value'])
+                    insight['change_absolute'] = insight['current_value'] - insight['prior_value']
+        
+        return insights
+
+    def _calculate_change_percentage(self, prior_value: float, current_value: float) -> float:
+        """Calculates the percentage change between two values."""
+        if prior_value == 0:
+            return 100 if current_value > 0 else 0
+        return ((current_value - prior_value) / prior_value) * 100
 
     def _create_insight_prompt(self, current_data: Dict[str, Any], prior_data: Dict[str, Any]) -> str:
-        """Creates a prompt for the Gemini API to generate SEO insights.
+        """Creates a prompt for the Gemini API to generate targeted SEO insights."""
+        prompt = f"""
+        Analyze the following SEO data and provide insights on the specified topics:
 
-        Args:
-            current_data: A dictionary containing the current SEO data.
-            prior_data: A dictionary containing the prior SEO data.
+        Current Data:
+        {json.dumps(current_data, indent=2)}
 
-        Returns:
-            A string containing the formatted prompt for the Gemini API.
+        Prior Data:
+        {json.dumps(prior_data, indent=2)}
+
+        Focus on the following topics and provide detailed insights:
+
+        {self._format_topics()}
+
+        For each insight:
+        - Provide specific data points for both current and prior periods
+        - Assign an importance score (0-100) based on the potential impact of the change
+        - Provide clear, actionable details about the change
+        - Focus on significant changes in absolute values or clear trends
+
+        Ensure all conclusions are strongly supported by the data provided. Focus on changes that have a substantial impact on the URL's performance.
         """
-        prompt = (
-            "Analyze the following SEO data and provide structured insights:\n\n"
-            "**Current Data:**\n```json\n"
-            f"{json.dumps(current_data, indent=4)}\n"
-            "```\n\n"
-            "**Prior Data:**\n```json\n"
-            f"{json.dumps(prior_data, indent=4)}\n"
-            "```\n\n"
-            "Provide insights in the following structured format:\n"
-            "1. Traffic change (increased, decreased, or no change, with percentage and analysis)\n"
-            "2. Ranking changes (improved, declined, or no change, with analysis)\n"
-            "3. Page speed changes (improved, declined, or no change, with analysis)\n"
-            "4. Critical issues (list of issues with type and description)\n"
-            "5. Opportunities (list of opportunities with type and description)\n"
-            "6. Overall analysis\n\n"
-            "Ensure the response is a valid JSON object matching the specified schema."
-        )
         return prompt
+
+    def _format_topics(self) -> str:
+        """Formats the report topics for the prompt."""
+        return "\n".join(f"- {topic}" for topic in self.report_topics)
+
+    def _create_response_schema(self) -> Dict[str, Any]:
+        """Creates a response schema based on the configured topics."""
+        schema = {
+            "type": "object",
+            "properties": {},
+            "required": []
+        }
+        
+        for topic in self.report_topics:
+            key = topic.lower().replace(' ', '_')
+            schema["properties"][key] = {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "description": {"type": "string"},
+                        "importance_score": {"type": "number"},
+                        "current_value": {"type": "number"},
+                        "prior_value": {"type": "number"},
+                        "details": {"type": "string"},
+                        "change_absolute": {"type": "number"},
+                        "change_percentage": {"type": "number"}
+                    },
+                    "required": ["description", "importance_score", "current_value", "prior_value", "details"]
+                }
+            }
+            schema["required"].append(key)
+        
+        return schema

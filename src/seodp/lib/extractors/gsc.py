@@ -25,34 +25,34 @@ class GSCExtractor(DataExtractor):
         self.search_console_service = build('searchconsole', 'v1', credentials=self.credentials)
         self.is_authenticated = True
 
-    def extract_data(self, page_url: str) -> Dict:
+    def extract_data(self, url: str) -> Dict:
         """Extract Google Search Console data for a given page URL."""
         self.check_authentication()
 
         overall_request = {
-            'startDate': self.config.start_date,
-            'endDate': self.config.end_date,
+            'startDate': self.start_date,
+            'endDate': self.end_date,
             'dimensions': ['page'],
             'dimensionFilterGroups': [{
                 'filters': [{
                     'dimension': 'page',
                     'operator': 'equals',
-                    'expression': page_url
+                    'expression': url
                 }]
             }]
         }
         overall_response = self.search_console_service.searchanalytics().query(siteUrl=self.config.site_url, body=overall_request).execute()
 
         query_request = {
-            'startDate': self.config.start_date,
-            'endDate': self.config.end_date,
+            'startDate': self.start_date,
+            'endDate': self.end_date,
             'dimensions': ['query'],
             'rowLimit': self.top_n,
             'dimensionFilterGroups': [{
                 'filters': [{
                     'dimension': 'page',
                     'operator': 'equals',
-                    'expression': page_url
+                    'expression': url
                 }]
             }]
         }

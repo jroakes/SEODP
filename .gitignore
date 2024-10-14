@@ -162,8 +162,7 @@ cython_debug/
 
 
 # JSON Keys
-*.json
-.json
+locomotive-reporting.json
 
 # Other
 approach.md
@@ -172,6 +171,8 @@ approach.md
 venv_seodp/
 
 all_code.txt
+response.md
+
 
 #Jupyter
 .ipynb_checkpoints/

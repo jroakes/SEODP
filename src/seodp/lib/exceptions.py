@@ -19,4 +19,6 @@ class DataProcessingError(Exception):
     """Raised when there is an error processing data."""
     pass
 
-
+class ConfigurationError(Exception):
+    """Raised when there's a problem with the configuration."""
+    pass

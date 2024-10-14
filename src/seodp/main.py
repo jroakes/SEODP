@@ -1,22 +1,30 @@
 """Main module to handle command-line arguments and initiate the SEO Data Platform."""
 
 import argparse
-import json
+import os
+from apscheduler.schedulers.blocking import BlockingScheduler
 from lib.manager import Manager
 from settings import CONFIG
 from lib.logging import logger
 
+
+def start_scheduled_run():
+    """Start the scheduled SEO data processing."""
+    manager = Manager(CONFIG)
+    manager.run_schedule()
+
+
 def main():
     """
-    Main function to handle command-line arguments and initiate the SEO Data Puller.
+    Main function to handle command-line arguments and initiate the SEO Data Platform.
     """
-    parser = argparse.ArgumentParser(description='SEO Data Puller')
-    parser.add_argument('-u', '--url', type=str, help='Page URL to analyze')
-    parser.add_argument('--test', action='store_true', help='Run test mode to compare data with previous period')
+    parser = argparse.ArgumentParser(description='SEO Data Platform')
+    parser.add_argument('--start', action='store_true', help='Start the main long running process')
+    parser.add_argument('--url_test', type=str, help='Test the URL and save results to file')
     parser.add_argument('-o', '--output', type=str, help='Output file for JSON or insights')
-    parser.add_argument('--run', action='store_true', help='Start the process and run the schedule')
+    parser.add_argument('--sitemap_test', action='store_true', help='Run the example sitemap URLs and save results to a file')
+    parser.add_argument('--email_test', action='store_true', help='Run the example sitemap URLs and email the results')
     parser.add_argument('--debug', action='store_true', help='Enable debug logging')
-    parser.add_argument('--sitemap-test', action='store_true', help='Run sitemap test workflow')
     args = parser.parse_args()
 
     if args.debug:
@@ -26,32 +34,48 @@ def main():
 
     manager = Manager(CONFIG)
 
-    results = None
+    results = None  # Initialize results
 
-    if args.run:
-        manager.run_schedule()
-    elif args.test:
-        if not args.url:
-            logger.error("Please provide a URL with -u/--url in test mode.")
+    if args.start:
+        schedule = os.getenv('SCHEDULE', 'monthly')
+        if schedule not in ['weekly', 'monthly']:
+            logger.error("Invalid SCHEDULE value. Must be 'weekly' or 'monthly'.")
             return
-        results = manager.run_test(args.url)
-        logger.info(f"Test results: {results}")
+
+        scheduler = BlockingScheduler()
+        if schedule == 'weekly':
+            scheduler.add_job(start_scheduled_run, 'cron', day_of_week='mon', hour=0, minute=0)
+        else:  # monthly
+            scheduler.add_job(start_scheduled_run, 'cron', day=1, hour=0, minute=0)
+
+        try:
+            scheduler.start()
+        except (KeyboardInterrupt, SystemExit):
+            logger.info("SEO Data Platform stopped")
+    elif args.url_test:
+        results = manager.run_url_test(args.url_test)
+        if results:
+            logger.info(f"Test results: {results}")
+        else:
+            logger.error(f"Error running URL test for {args.url_test}")
     elif args.sitemap_test:
-        results = manager.run_sitemap_test()
-        logger.info("Sitemap test completed")
-    elif args.url:
-        results = manager.run_single_url(args.url)
-        logger.info(f"Single URL results: {results}")
+        if hasattr(CONFIG, 'test_sitemap_urls') and CONFIG.test_sitemap_urls:
+            results = manager.run_sitemap_test(CONFIG.test_sitemap_urls)
+            logger.info("Sitemap test completed")
+        else:
+            logger.error("No sitemap URLs provided for testing.")
+    elif args.email_test:
+        recipient_email = os.getenv('RECIPIENT_EMAIL')
+        if not recipient_email:
+            logger.error("RECIPIENT_EMAIL environment variable is not set.")
+            return
+        manager.run_email_test(recipient_email)
+        logger.info("Email test completed")
     else:
         parser.print_help()
 
-    if results and args.output:
-        try:
-            with open(args.output, 'w') as f:
-                json.dump(results, f, indent=4)
-            logger.info(f"Results written to {args.output}")
-        except IOError as e:
-            logger.error(f"Error writing to output file: {e}")
+    if args.output and results is not None:  # Check if results is defined
+        manager.save_results(results, args.output)
 
 if __name__ == "__main__":
     main()
