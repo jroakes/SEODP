@@ -1,5 +1,7 @@
 # SEO Data Platform
 
+![SEO Data Platform Cover](cover.png)
+
 ## Description
 
 The SEO Data Platform is a comprehensive tool designed to automate the collection, analysis, and reporting of SEO-related data. It integrates with various data sources such as Google Analytics 4, Google Search Console, and PageSpeed Insights to provide actionable insights for improving website performance and search engine rankings.
