@@ -96,5 +96,15 @@ Contributions to the SEO Data Platform are welcome! Please follow these steps:
 
 Please ensure your code adheres to the project's coding standards and include tests for new functionality.
 
+### Ideas for Contributing
+
+- [ ] Don't re-hit PSI when backfilling data on initial run
+- [ ] Async!!!!!!!!!!!!!!!!!!!!!!!!!!! processing
+- [ ] Use something called Pydantic (Hey Joe!)
+- [ ] Add YoY as well PoP for comparison
+- [ ] Fine tune some models
+- [ ] Add a SEMRush, Ahrefs, or Nozzle extractor???!!!
+- [ ] Build a one-click deployer on Digital Ocean or something
+
 ## License
 MIT

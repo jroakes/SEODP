@@ -166,13 +166,13 @@ locomotive-reporting.json
 
 # Other
 approach.md
-
-# Env
-venv_seodp/
-
+seodp.db
 all_code.txt
 response.md
 
+
+# Env
+venv_seodp/
 
 #Jupyter
 .ipynb_checkpoints/

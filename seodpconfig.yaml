@@ -14,8 +14,6 @@ sitemap_urls:
   - 'https://locomotive.agency/services/technical-seo/'
   - 'https://locomotive.agency/'
 
-
-
 # Test Data Source Settings
 test_sitemap_urls: 
   - 'https://locomotive.agency/local-seo/how-to-handle-local-seo-without-a-physical-address/'
