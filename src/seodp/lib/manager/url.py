@@ -3,7 +3,7 @@
 import requests
 import xml.etree.ElementTree as ET
 from typing import Dict, Any, List
-from lib.logging import logger
+from loguru import logger
 from lib.manager.data import DataManager
 from lib.manager.llm import LLMManager
 

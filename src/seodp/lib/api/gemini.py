@@ -4,7 +4,7 @@ from typing import Optional, Any, Dict
 import google.generativeai as genai
 from google.generativeai import GenerativeModel, GenerationConfig
 from tenacity import retry, stop_after_attempt, wait_exponential, RetryError
-from lib.logging import logger
+from loguru import logger
 from lib.exceptions import GeminiAPIError
 
 class GeminiAPIClient:

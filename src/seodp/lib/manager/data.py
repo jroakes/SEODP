@@ -6,7 +6,7 @@ import sqlite3
 import json
 from lib.api.gemini import GeminiAPIClient
 from lib.extractors import ExtractorTools
-from lib.logging import logger
+from loguru import logger
 
 class Period(NamedTuple):
     year: int

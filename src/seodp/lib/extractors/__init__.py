@@ -6,7 +6,7 @@ from lib.extractors.ga4 import GA4Extractor
 from lib.extractors.gsc import GSCExtractor
 from lib.extractors.psi import PSIExtractor
 from lib.extractors.url import URLExtractor
-from lib.logging import logger
+from loguru import logger
 
 
 EXTRACTOR_CLASSES = [GA4Extractor, GSCExtractor, PSIExtractor, URLExtractor]

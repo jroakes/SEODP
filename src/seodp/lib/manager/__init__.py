@@ -1,6 +1,6 @@
 import json
 from typing import Dict, Any, List
-from lib.logging import logger
+from loguru import logger
 from .url import URLManager
 from .data import DataManager
 from .aggregation import AggregationManager
