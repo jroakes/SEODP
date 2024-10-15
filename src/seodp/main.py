@@ -4,7 +4,7 @@ import argparse
 import os
 from apscheduler.schedulers.blocking import BlockingScheduler
 from lib.manager import Manager
-from lib import logging
+from lib import logconfig
 from settings import CONFIG
 from loguru import logger
 
@@ -79,5 +79,5 @@ def main():
         manager.save_results(results, args.output)
 
 if __name__ == "__main__":
-    logging.setup()
+    logconfig.setup()
     main()
