@@ -8,15 +8,18 @@ from typing import Dict, Any, List
 from loguru import logger
 import os
 
+from settings import Config
+
+
 class EmailHandler:
-    def __init__(self, config):
+    def __init__(self, config: Config):
         self.config = config
         self.smtp_server = "live.smtp.mailtrap.io"
         self.port = 587
-        self.login = config.api['mailtrap_login']
-        self.password = config.api['mailtrap_password']
-        self.sender_email = config.api['mailtrap_sender_email']
-        self.recipient_email = config.api['recipient_email']
+        self.login = config.api.mailtrap_login
+        self.password = config.api.mailtrap_password
+        self.sender_email = config.api.mailtrap_sender_email
+        self.recipient_email = config.api.recipient_email
         self.report_email_subject = config.report_email_subject
         template_dir = os.path.join(os.path.dirname(__file__), '..', 'templates')
         self.jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir))

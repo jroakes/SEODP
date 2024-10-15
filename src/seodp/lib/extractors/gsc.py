@@ -5,12 +5,15 @@ from googleapiclient.discovery import build
 from lib.extractors.base import DataExtractor
 from typing import Dict
 
+from settings import Config
+
+
 class GSCExtractor(DataExtractor):
-    def __init__(self, config: Dict):
+    def __init__(self, config: Config):
         super().__init__()
         self.config = config
-        self.service_account_file = config.api['service_account_file']
-        self.subject_email = config.api['subject_email']
+        self.service_account_file = config.api.service_account_file
+        self.subject_email = config.api.subject_email
         self.credentials = None
         self.search_console_service = None
         self.top_n = config.top_n

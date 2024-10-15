@@ -13,3 +13,6 @@ python-dotenv
 pyyaml
 tenacity
 APScheduler
+pydantic-settings
+email-validator
+typing-extensions

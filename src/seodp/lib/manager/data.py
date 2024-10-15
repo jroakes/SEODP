@@ -8,6 +8,9 @@ from lib.api.gemini import GeminiAPIClient
 from lib.extractors import ExtractorTools
 from loguru import logger
 
+from settings import Config
+
+
 class Period(NamedTuple):
     year: int
     period: int
@@ -15,7 +18,7 @@ class Period(NamedTuple):
     end: str
 
 class DataManager:
-    def __init__(self, config: Dict):
+    def __init__(self, config: Config):
         self.config = config
         self.db_file = config.db_file
         self.conn = sqlite3.connect(self.db_file)

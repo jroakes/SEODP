@@ -1,49 +1,91 @@
 """Settings for the SEO Data Platform."""
 
-import os
-import yaml
-from lib.exceptions import ConfigurationError
-from dotenv import load_dotenv
+from pathlib import Path
+from typing import Type, Tuple, List, Optional
 
-load_dotenv()  # Load environment variables from .env file
-
-class DotDict(dict):
-    """
-    A dictionary subclass that allows dot notation access to its items.
-    """
-    __getattr__ = dict.get
-    __setattr__ = dict.__setitem__
-    __delattr__ = dict.__delitem__
+import pydantic
+from pydantic_settings import (
+    BaseSettings,
+    SettingsConfigDict,
+    PydanticBaseSettingsSource,
+    YamlConfigSettingsSource,
+)
+from typing_extensions import Self
 
 
-def get_required_env(key: str) -> str:
-    """Get a required environment variable or raise an error."""
-    value = os.getenv(key)
-    if value is None:
-        raise ConfigurationError(f"Missing required environment variable: {key}")
-    return value
+class APIConfig(BaseSettings):
+    """Configuration settings for external APIs."""
 
-def load_config(yaml_file: str) -> DotDict:
-    """Load configuration from a YAML file."""
-    try:
-        with open(yaml_file, 'r') as f:
-            config = yaml.safe_load(f)
-            return DotDict(config)
-    except FileNotFoundError:
-        raise ConfigurationError(f"Configuration file not found: {yaml_file}")
-    except yaml.YAMLError as e:
-        raise ConfigurationError(f"Error parsing YAML file: {e}")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore", frozen=True)
+
+    service_account_file: pydantic.FilePath = pydantic.Field(validation_alias="service_account_file_path")
+    subject_email: pydantic.EmailStr
+    scrapingbee_api_key: str
+    gemini_api_key: str
+    psi_api_key: str
+    mailtrap_login: str
+    mailtrap_password: str
+    mailtrap_sender_email: pydantic.EmailStr
+    recipient_email: pydantic.EmailStr
+    psi_timeout: pydantic.PositiveInt = 60
 
 
-CONFIG = load_config('seodpconfig.yaml')
-CONFIG.api = DotDict({
-    'service_account_file': get_required_env('SERVICE_ACCOUNT_FILE_PATH'),
-    'subject_email': get_required_env('SUBJECT_EMAIL'),
-    'scrapingbee_api_key': get_required_env('SCRAPINGBEE_API_KEY'),
-    'gemini_api_key': get_required_env('GEMINI_API_KEY'),
-    'psi_api_key': get_required_env('PSI_API_KEY'),
-    'mailtrap_login': get_required_env('MAILTRAP_LOGIN'),
-    'mailtrap_password': get_required_env('MAILTRAP_PASSWORD'),
-    'mailtrap_sender_email': get_required_env('MAILTRAP_SENDER_EMAIL'),
-    'recipient_email': get_required_env('RECIPIENT_EMAIL')
-})
+class Config(BaseSettings):
+    """Configuration settings for the SEO Data Platform."""
+
+    model_config = SettingsConfigDict(frozen=True)
+
+    api: APIConfig
+
+    db_file: Path
+    gemini_model: str = 'gemini-1.5-pro'
+    low_traffic_threshold: pydantic.NonNegativeInt = 100
+    schedule: str = 'monthly'
+    site_url: str
+    property_id: str
+    sitemap_file: Optional[str] = None
+    sitemap_urls: Optional[List[str]] = None
+    test_sitemap_urls: Optional[List[str]] = None
+    report_email_subject: str = 'SEO Insights Report'
+    report_significance_threshold: pydantic.NonNegativeInt = 25
+    top_n: pydantic.NonNegativeInt = 10
+    report_topics: List[str] = [
+        'Significant traffic changes',
+        'Significant keyword changes',
+        'Significant content changes',
+        'Significant changes to prior or next pages',
+        'Significant changes to referral sources',
+        'Significant changes to organic search sources',
+        'Causal relationships between changes'
+    ]
+    max_insights: pydantic.NonNegativeInt = 5
+
+    @pydantic.model_validator(mode="after")
+    def check_sitemap_file_or_urls(self) -> Self:
+        """Ensure that either a sitemap file or URLs are provided."""
+        if not self.sitemap_file and not self.sitemap_urls:
+            raise ValueError("No sitemap URLs or file provided in configuration.")
+        return self
+
+    @classmethod
+    def settings_customise_sources(
+        cls,
+        settings_cls: Type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource,
+    ) -> Tuple[PydanticBaseSettingsSource, ...]:
+        """Customizes the settings sources for the SEO Data Platform.
+
+        Uses only init settings and a YAML file for configuration.
+        """
+        return (
+            init_settings,
+            # Add yaml config source
+            YamlConfigSettingsSource(settings_cls, yaml_file="seodpconfig.yaml"),
+        )
+
+
+API_CONFIG = APIConfig()
+CONFIG = Config(api=API_CONFIG)

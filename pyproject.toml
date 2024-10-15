@@ -23,6 +23,9 @@ apscheduler = "^3.10.4"
 pyyaml = "^6.0.2"
 google-generativeai = "^0.8.3"
 tenacity = "^9.0.0"
+pydantic-settings = "^2.5.2"
+email-validator = "^2.2.0"
+typing-extensions = "^4.12.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"

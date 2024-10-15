@@ -7,10 +7,13 @@ from tenacity import retry, stop_after_attempt, wait_exponential, RetryError
 from loguru import logger
 from lib.exceptions import GeminiAPIError
 
+from settings import Config
+
+
 class GeminiAPIClient:
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: Config):
         self.config = config
-        genai.configure(api_key=config.api['gemini_api_key'])
+        genai.configure(api_key=config.api.gemini_api_key)
         self.model = GenerativeModel(model_name=config.gemini_model)
 
     def generate_content(self, prompt: str, response_schema: Optional[Dict[str, Any]] = None, 

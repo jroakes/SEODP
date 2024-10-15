@@ -11,6 +11,8 @@ from trafilatura import extract
 from lib.extractors.base import DataExtractor
 from lib.exceptions import AuthenticationError
 
+from settings import Config
+
 logger = logging.getLogger(__name__)
 
 class URLExtractor(DataExtractor):
@@ -42,10 +44,10 @@ class URLExtractor(DataExtractor):
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
     }
 
-    def __init__(self, config: Dict):
+    def __init__(self, config: Config):
         super().__init__()
         self.config = config
-        self.api_key = config.api['scrapingbee_api_key']
+        self.api_key = config.api.scrapingbee_api_key
         self.client = None
 
     def authenticate(self) -> None:

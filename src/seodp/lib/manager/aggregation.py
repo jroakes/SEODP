@@ -3,17 +3,20 @@
 from typing import Dict, Any, List
 from loguru import logger
 
+from settings import Config
+
+
 def calculate_percentage_change(current: float, previous: float) -> float:
     if previous == 0:
         return 100 if current > 0 else 0
     return ((current - previous) / previous) * 100
 
 class AggregationManager:
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: Config):
         self.config = config
-        self.report_topics = config.get('report_topics', [])
-        self.significance_threshold = config.get('report_significance_threshold', 25)
-        self.max_insights = config.get('max_insights', 5)
+        self.report_topics = config.report_topics
+        self.significance_threshold = config.report_significance_threshold
+        self.max_insights = config.max_insights
 
     def aggregate_insights(self, all_url_insights: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Aggregates and prioritizes insights from multiple URLs based on configured topics."""
