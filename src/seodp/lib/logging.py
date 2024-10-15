@@ -3,6 +3,9 @@
 # import sys
 from loguru import logger
 
-# Configure logging to write to both console and a local file
-logger.add("seo-dp.log", rotation="1 week", level="INFO")
-#logger.add(sys.stderr, level="INFO")
+
+def setup() -> None:
+    """Configures logging."""
+    # Write logs to a file and to stderr
+    logger.add("seo-dp.log", rotation="1 week", level="INFO")
+    # logger.add(sys.stderr, level="INFO")
