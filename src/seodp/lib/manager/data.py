@@ -18,16 +18,15 @@ class DataManager:
     def __init__(self, config: Dict):
         self.config = config
         self.db_file = config.db_file
+        self.conn = sqlite3.connect(self.db_file)
         self.gemini_client = GeminiAPIClient(config)
         self.extractor_tools = ExtractorTools(config)
         self.setup_database()
 
     def setup_database(self) -> None:
-        with sqlite3.connect(self.db_file) as conn:
-            c = conn.cursor()
-            c.execute('''CREATE TABLE IF NOT EXISTS data
+        self.conn.execute('''CREATE TABLE IF NOT EXISTS data
                          (url TEXT, year INTEGER, period INTEGER, start_date TEXT, end_date TEXT, data TEXT, insights TEXT)''')
-            c.execute('''CREATE TABLE IF NOT EXISTS excluded_urls
+        self.conn.execute('''CREATE TABLE IF NOT EXISTS excluded_urls
                          (url TEXT, exclusion_date TEXT, reason TEXT)''')
 
     def get_current_period(self) -> Period:
@@ -85,10 +84,8 @@ class DataManager:
         return self._extract_data(url, prior_period)
 
     def _get_data(self, url: str, year: int, period: int) -> Dict[str, Any]:
-        with sqlite3.connect(self.db_file) as conn:
-            c = conn.cursor()
-            c.execute("SELECT data FROM data WHERE url=? AND year=? AND period=?", (url, year, period))
-            data = c.fetchone()
+        c = self.conn.execute("SELECT data FROM data WHERE url=? AND year=? AND period=?", (url, year, period))
+        data = c.fetchone()
         return json.loads(data[0]) if data else {}
 
     def _extract_data(self, url: str, period: Period) -> Dict[str, Any]:
@@ -96,44 +93,36 @@ class DataManager:
         return {'data_attribution': {'url': url, 'date_range': f"{period.start} to {period.end}"}, 'data': data}
 
     def store_data(self, url: str, period: Period, data: Dict[str, Any], insights: Dict[str, Any]) -> None:
-        with sqlite3.connect(self.db_file) as conn:
-            c = conn.cursor()
-            data_json = json.dumps(data)
-            insights_json = json.dumps(insights)
-            c.execute("INSERT OR REPLACE INTO data (url, year, period, start_date, end_date, data, insights) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-                      (url, period.year, period.period, period.start, period.end, data_json, insights_json))
+        data_json = json.dumps(data)
+        insights_json = json.dumps(insights)
+        with self.conn:
+            self.conn.execute("INSERT OR REPLACE INTO data (url, year, period, start_date, end_date, data, insights) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                             (url, period.year, period.period, period.start, period.end, data_json, insights_json))
 
     def get_all_insights(self, year: int, period: int) -> List[Dict[str, Any]]:
-        with sqlite3.connect(self.db_file) as conn:
-            c = conn.cursor()
-            c.execute("SELECT url, insights FROM data WHERE year=? AND period=?", (year, period))
-            results = c.fetchall()
+        c = self.conn.execute("SELECT url, insights FROM data WHERE year=? AND period=?", (year, period))
+        results = c.fetchall()
         return [{"url": row[0], **json.loads(row[1])} for row in results]
 
     def is_url_excluded_from_processing(self, url: str) -> bool:
-        with sqlite3.connect(self.db_file) as conn:
-            c = conn.cursor()
-            c.execute("SELECT 1 FROM excluded_urls WHERE url=?", (url,))
-            result = c.fetchone()
+        c = self.conn.execute("SELECT 1 FROM excluded_urls WHERE url=?", (url,))
+        result = c.fetchone()
         return bool(result)
 
     def exclude_low_traffic_urls_from_processing(self, urls: List[str]) -> None:
         current_period = self.get_current_period()
-        with sqlite3.connect(self.db_file) as conn:
-            c = conn.cursor()
-            low_traffic_threshold = self.config.low_traffic_threshold
+        low_traffic_threshold = self.config.low_traffic_threshold
 
-            for url in urls:
-                c.execute("SELECT data FROM data WHERE url=? AND year=? AND period=?", (url, current_period.year, current_period.period))
-                latest_data = c.fetchone()
-                if latest_data:
-                    data = json.loads(latest_data[0])
-                    if data.get('GA4Extractor', {}).get('organic_sessions', 0) < low_traffic_threshold:
-                        logger.info(f"Excluding {url} due to low traffic")
-                        self._add_url_to_excluded_list(url, "Low traffic")
+        for url in urls:
+            c = self.conn.execute("SELECT data FROM data WHERE url=? AND year=? AND period=?", (url, current_period.year, current_period.period))
+            latest_data = c.fetchone()
+            if latest_data:
+                data = json.loads(latest_data[0])
+                if data.get('GA4Extractor', {}).get('organic_sessions', 0) < low_traffic_threshold:
+                    logger.info(f"Excluding {url} due to low traffic")
+                    self._add_url_to_excluded_list(url, "Low traffic")
 
     def _add_url_to_excluded_list(self, url: str, reason: str) -> None:
-        with sqlite3.connect(self.db_file) as conn:
-            c = conn.cursor()
-            exclusion_date = datetime.now().strftime('%Y-%m-%d')
-            c.execute("INSERT INTO excluded_urls (url, exclusion_date, reason) VALUES (?, ?, ?)", (url, exclusion_date, reason))
+        exclusion_date = datetime.now().strftime('%Y-%m-%d')
+        with self.conn:
+            self.conn.execute("INSERT INTO excluded_urls (url, exclusion_date, reason) VALUES (?, ?, ?)", (url, exclusion_date, reason))
