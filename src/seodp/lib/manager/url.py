@@ -7,8 +7,11 @@ from loguru import logger
 from lib.manager.data import DataManager
 from lib.manager.llm import LLMManager
 
+from settings import Config
+
+
 class URLManager:
-    def __init__(self, config: Dict):
+    def __init__(self, config: Config):
         self.config = config
         self.data_manager = DataManager(config)
         self.llm_manager = LLMManager(config)
@@ -41,14 +44,11 @@ class URLManager:
         return all_insights
 
     def _get_urls(self) -> List[str]:
-        if hasattr(self.config, 'sitemap_urls') and self.config.sitemap_urls:
+        if self.config.sitemap_urls:
             logger.info("Using sitemap URLs from configuration.")
             return self.config.sitemap_urls
-        elif hasattr(self.config, 'sitemap_file') and self.config.sitemap_file:
-            logger.info("Using sitemap file.")
-            return self.extract_urls_from_sitemap(self.config.sitemap_file)
-        else:
-            raise ValueError("No sitemap URLs or file provided in configuration.")
+        logger.info("Using sitemap file.")
+        return self.extract_urls_from_sitemap(self.config.sitemap_file)
 
     @staticmethod
     def extract_urls_from_sitemap(sitemap_source: str) -> List[str]:

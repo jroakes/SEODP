@@ -60,7 +60,7 @@ def main():
         else:
             logger.error(f"Error running URL test for {args.url_test}")
     elif args.sitemap_test:
-        if hasattr(CONFIG, 'test_sitemap_urls') and CONFIG.test_sitemap_urls:
+        if CONFIG.test_sitemap_urls:
             results = manager.run_sitemap_test(CONFIG.test_sitemap_urls)
             logger.info("Sitemap test completed")
         else:

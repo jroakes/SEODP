@@ -100,7 +100,7 @@ Please ensure your code adheres to the project's coding standards and include te
 
 - [ ] Don't re-hit PSI when backfilling data on initial run
 - [ ] Async!!!!!!!!!!!!!!!!!!!!!!!!!!! processing
-- [ ] Use something called Pydantic (Hey Joe!)
+- [x] ~~Use something called Pydantic (Hey Joe!)~~
 - [ ] Add YoY as well PoP for comparison
 - [ ] Fine tune some models
 - [ ] Add a SEMRush, Ahrefs, or Nozzle extractor???!!!

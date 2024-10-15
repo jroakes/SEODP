@@ -4,12 +4,15 @@ import json
 from typing import Dict, Any, List
 from lib.api.gemini import GeminiAPIClient
 
+from settings import Config
+
+
 class LLMManager:
-    def __init__(self, config: Dict):
+    def __init__(self, config: Config):
         self.config = config
         self.gemini_client = GeminiAPIClient(config)
-        self.report_topics = config.get('report_topics', [])
-        self.significance_threshold = config.get('report_significance_threshold', 25)
+        self.report_topics = config.report_topics
+        self.significance_threshold = config.report_significance_threshold
 
     def generate_structured_insights(self, current_data: Dict[str, Any], prior_data: Dict[str, Any]) -> Dict[str, Any]:
         """Generates structured insights based on configured topics and significance threshold."""

@@ -7,8 +7,11 @@ from .aggregation import AggregationManager
 from .llm import LLMManager
 from lib.api.email import EmailHandler
 
+from settings import Config
+
+
 class Manager:
-    def __init__(self, config: Dict):
+    def __init__(self, config: Config):
         self.config = config
         self.url_manager = URLManager(config)
         self.data_manager = DataManager(config)

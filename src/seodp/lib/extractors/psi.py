@@ -4,12 +4,15 @@ import requests
 from lib.extractors.base import DataExtractor
 from typing import Dict
 
+from settings import Config
+
+
 class PSIExtractor(DataExtractor):
-    def __init__(self, config: Dict):
+    def __init__(self, config: Config):
         super().__init__()
         self.config = config
-        self.api_key = config.api['psi_api_key']
-        self.timeout = config.api.get("psi_timeout", 60)
+        self.api_key = config.api.psi_api_key
+        self.timeout = config.api.psi_timeout
 
     def authenticate(self) -> None:
         """No authentication required for this extractor."""

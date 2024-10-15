@@ -8,6 +8,7 @@ from lib.extractors.psi import PSIExtractor
 from lib.extractors.url import URLExtractor
 from loguru import logger
 
+from settings import Config
 
 EXTRACTOR_CLASSES = [GA4Extractor, GSCExtractor, PSIExtractor, URLExtractor]
 
@@ -17,7 +18,7 @@ class ExtractorTools:
     A class that provides a unified interface for extracting data from various sources.
     """
 
-    def __init__(self, config: Dict):
+    def __init__(self, config: Config):
         self.config = config
         self.tools = self._load_extractors(config)
 
