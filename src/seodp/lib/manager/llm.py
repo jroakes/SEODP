@@ -15,6 +15,8 @@ class LLMManager:
         """Generates structured insights based on configured topics and significance threshold."""
         prompt = self._create_insight_prompt(current_data, prior_data)
         response_schema = self._create_response_schema()
+
+        # Generate insights using Gemini API
         response = self.gemini_client.generate_content(prompt, response_schema=response_schema)
         insights = json.loads(response)
         

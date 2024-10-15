@@ -1485,6 +1485,21 @@ files = [
 ]
 
 [[package]]
+name = "tenacity"
+version = "9.0.0"
+description = "Retry code until it succeeds"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "tenacity-9.0.0-py3-none-any.whl", hash = "sha256:93de0c98785b27fcf659856aa9f54bfbd399e29969b0621bc7f762bd441b4539"},
+    {file = "tenacity-9.0.0.tar.gz", hash = "sha256:807f37ca97d62aa361264d497b0e31e92b8027044942bfa756160d908320d73b"},
+]
+
+[package.extras]
+doc = ["reno", "sphinx"]
+test = ["pytest", "tornado (>=4.5)", "typeguard"]
+
+[[package]]
 name = "tld"
 version = "0.13"
 description = "Extract the top-level domain (TLD) from the URL given."
@@ -1634,4 +1649,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "54ae02a619e9d2951f0f63105bd3b70ffbe62538e259575b9200c5227970b2db"
+content-hash = "946f52ccafb21a3c92e83aa0a817b3056dbdcd57dc18a40542193b7222191644"

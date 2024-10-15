@@ -1,0 +1,781 @@
+{
+    "url": "https://locomotive.agency/",
+    "current_period": [
+        2024,
+        9,
+        "2024-09-01",
+        "2024-09-30"
+    ],
+    "prior_period": [
+        2024,
+        8,
+        "2024-08-01",
+        "2024-08-31"
+    ],
+    "current_data": {
+        "data_attribution": {
+            "url": "https://locomotive.agency/",
+            "date_range": "2024-09-01 to 2024-09-30"
+        },
+        "data": {
+            "GA4Extractor": {
+                "organic_sessions": "231",
+                "organic_users": "166",
+                "organic_new_users": "140",
+                "bounce_rate": "0.33333333333333331",
+                "referring_sites": [
+                    "google",
+                    "bing",
+                    "linkedin",
+                    "duckduckgo"
+                ],
+                "avg_time_on_page": "142.5695125887446",
+                "engagement_rate": "0.66666666666666663",
+                "revenue": null,
+                "user_demographics": [
+                    {
+                        "age": "unknown",
+                        "gender": "unknown",
+                        "country": "United States",
+                        "users": "243"
+                    },
+                    {
+                        "age": "18-24",
+                        "gender": "male",
+                        "country": "United States",
+                        "users": "14"
+                    },
+                    {
+                        "age": "25-34",
+                        "gender": "male",
+                        "country": "United States",
+                        "users": "12"
+                    },
+                    {
+                        "age": "25-34",
+                        "gender": "female",
+                        "country": "United States",
+                        "users": "10"
+                    }
+                ],
+                "device_categories": {
+                    "desktop": "145",
+                    "mobile": "20",
+                    "tablet": "1"
+                },
+                "pages_visited_prior": [
+                    {
+                        "page": "https://www.google.com/",
+                        "views": "150"
+                    },
+                    {
+                        "page": "",
+                        "views": "67"
+                    },
+                    {
+                        "page": "https://www.bing.com/",
+                        "views": "14"
+                    },
+                    {
+                        "page": "https://locomotive.agency/contact-us/",
+                        "views": "6"
+                    },
+                    {
+                        "page": "https://bing.com/",
+                        "views": "4"
+                    },
+                    {
+                        "page": "https://locomotive.agency/why-work-with-us/who-we-are/",
+                        "views": "3"
+                    },
+                    {
+                        "page": "https://locomotive.agency/",
+                        "views": "2"
+                    },
+                    {
+                        "page": "https://locomotive.agency/author/jr/page/2/",
+                        "views": "2"
+                    },
+                    {
+                        "page": "https://locomotive.agency/case-studies/",
+                        "views": "2"
+                    },
+                    {
+                        "page": "https://locomotive.agency/services/",
+                        "views": "2"
+                    }
+                ],
+                "pages_visited_next": [
+                    {
+                        "page": "/why-work-with-us/who-we-are/",
+                        "views": "34"
+                    },
+                    {
+                        "page": "/contact-us/",
+                        "views": "24"
+                    },
+                    {
+                        "page": "/why-work-with-us/",
+                        "views": "10"
+                    },
+                    {
+                        "page": "/services/",
+                        "views": "9"
+                    },
+                    {
+                        "page": "/case-studies/",
+                        "views": "8"
+                    },
+                    {
+                        "page": "/awards/",
+                        "views": "7"
+                    },
+                    {
+                        "page": "/careers/",
+                        "views": "7"
+                    },
+                    {
+                        "page": "/research/",
+                        "views": "4"
+                    },
+                    {
+                        "page": "/",
+                        "views": "2"
+                    },
+                    {
+                        "page": "/data-analysis-tools/",
+                        "views": "2"
+                    }
+                ]
+            },
+            "GSCExtractor": {
+                "clicks": 134,
+                "impressions": 11168,
+                "ctr": 0.011998567335243553,
+                "avg_position": 66.85207736389685,
+                "ranking_keywords": [
+                    {
+                        "query": "locomotive agency",
+                        "clicks": 86,
+                        "impressions": 639,
+                        "ctr": 0.13458528951486698,
+                        "position": 1.8560250391236308
+                    },
+                    {
+                        "query": "localmotive inc",
+                        "clicks": 2,
+                        "impressions": 3,
+                        "ctr": 0.6666666666666666,
+                        "position": 9.666666666666666
+                    },
+                    {
+                        "query": "locomotive website",
+                        "clicks": 2,
+                        "impressions": 103,
+                        "ctr": 0.019417475728155338,
+                        "position": 9.048543689320388
+                    },
+                    {
+                        "query": "ad agencies in north carolina",
+                        "clicks": 1,
+                        "impressions": 1,
+                        "ctr": 1,
+                        "position": 1
+                    },
+                    {
+                        "query": "locomotive marketing",
+                        "clicks": 1,
+                        "impressions": 26,
+                        "ctr": 0.038461538461538464,
+                        "position": 5
+                    },
+                    {
+                        "query": "locomotive.agency",
+                        "clicks": 1,
+                        "impressions": 5,
+                        "ctr": 0.2,
+                        "position": 1
+                    },
+                    {
+                        "query": "seo agency europe",
+                        "clicks": 1,
+                        "impressions": 81,
+                        "ctr": 0.012345679012345678,
+                        "position": 90.74074074074075
+                    },
+                    {
+                        "query": "a team agency",
+                        "clicks": 0,
+                        "impressions": 1,
+                        "ctr": 0,
+                        "position": 79
+                    },
+                    {
+                        "query": "advertising agency europe",
+                        "clicks": 0,
+                        "impressions": 1,
+                        "ctr": 0,
+                        "position": 100
+                    },
+                    {
+                        "query": "advertising agency seo",
+                        "clicks": 0,
+                        "impressions": 87,
+                        "ctr": 0,
+                        "position": 11.39080459770115
+                    }
+                ],
+                "top_no_click_queries": [
+                    "locomotive agency",
+                    "locomotive website",
+                    "advertising agency seo",
+                    "seo agency europe",
+                    "locomotive marketing",
+                    "locomotive.agency",
+                    "localmotive inc",
+                    "a team agency",
+                    "advertising agency europe",
+                    "ad agencies in north carolina"
+                ]
+            },
+            "PSIExtractor": {
+                "desktop": {
+                    "largest_contentful_paint": null,
+                    "cumulative_layout_shift": null,
+                    "interaction_to_next_paint": null,
+                    "first_contentful_paint": null,
+                    "time_to_interactive": null,
+                    "speed_index": null,
+                    "total_blocking_time": null,
+                    "performance_score": null,
+                    "first_meaningful_paint": null
+                },
+                "mobile": {
+                    "largest_contentful_paint": 6151.199406829426,
+                    "cumulative_layout_shift": 1.0671030271915296,
+                    "interaction_to_next_paint": 19961.52168411817,
+                    "first_contentful_paint": 1026.0204519825052,
+                    "time_to_interactive": 19961.52168411817,
+                    "speed_index": 5441.504388281106,
+                    "total_blocking_time": 2677.499999999999,
+                    "performance_score": 0.2,
+                    "first_meaningful_paint": null
+                }
+            },
+            "URLExtractor": {
+                "clean_content": "Trusted byLOCOMOTIVE Acquires IMS Marketing Expands to European MarketWe are thrilled to announce that LOCOMOTIVE Agency has acquired IMS Marketing a premier European digital marketing agency based in IrelandThis landmark acquisition marks a significant leap in LOCOMOTIVEs global growth strategy strengthening our international footprint and broadening our service portfolio including gotomarket expertise and strategy for the US and now EU and UK markets Read More Our ServicesLearn more about our workLOCOMOTIVE is a fullservice digital marketing agency offering a range of initiatives to drive your companys revenue and goals Our capabilities are rooted in the years of experience of our agency and its employeesTechnical SEOOnpage optimization is an important leg of your SEO efforts but SEO is more than keywords and content Our team of technical SEO agency specialists deliver measurable results Understand the Technical Side of SEO Content OnPage SEOContent is a vital part of SEO Our content team crafts engaging narratives to engage audiences and help drive organic growth to your website We create keywordrich factbased articles optimizations and more to reach your targeted audience Learn Why Content Matters Enterprise Local SEOWhether you have a single storefront or multiple locations across the country we can help you reach nearby customers Our local SEO specialists currently manage thousands of local business locations and will help target your local audience to get maximum visibility and engagement Get the Local SEO Edge Paid MediaPaid digital advertising is an effective way to put your brand and product or service in front of qualified buyers Our dedicated paid media team Google International Growth Agency Partners will create and manage campaigns to maximize your return on investment we speak MQL SQL ROAS CACPP etc We will also provide guidance on how to adjust tactics to stay ahead of the competition and expand your investment and ROI Unlock Better Paid Media Results ImplementationWhen resources are scarce or bandwidth is overloaded our agency implementation team can step in and completely manage or work alongside your team to provide the implementation support you need We have the experience to assist our clients in implementing our content recommendations getting their web projects off the ground and ensuring a successful rollout We will help you stay on track with your goals ensure quality control and provide ongoing optimization over time How We Take Work Off Your Team Link BuildingLink building is a powerful SEO tool to increase rankings traffic and visibility We provide custom linkbuilding services that are tailored to your business needs Our team will work to create quality backlinks from authoritative websites and sources to help boost your websites visibility Get Links from Trusted Sources Our AgencyMeet our talented teamThe people behind LOCOMOTIVE and our skill and desire to solve problems and offer the best possible outcome for our clients are the steam moving this engine forward Who We Are Awarded RecommendedBest SEO Agency AwardOur team is humbled to be recognized as both Best SEO Agency and Best PPC Agency by the acclaimed US Search Awards in 2023 on the heels of our Best SEO Agency wins in 2019 and 2022 While innovation and curiosity is at our core client success is the beating heart of the agency Being recognized in the industry means a lot but winning in search for our clients means even more Read About Our AwardWinning Team One of MidAtlantics Fastest Growing CompaniesBeing recognized by Inc in 2024 as one of the MidAtlantic Regions fastestgrowing businesses is a true testament of how committed our team is to producing outstanding outcomes and developing lasting partnerships See Our Industry Accolades Case StudiesView Our WorkWe have worked with many different types of businesses from small startups to large corporations Our portfolio is full of projects that showcase the impact we can have on businesses by optimizing their online presence See some of our success stories and case studies here See Our Case Studies This industry should be collaborativeThe goal of our industry blog is to share knowledge among other industry professionals as well as any clients or search marketers who may be interested We hope you find the content useful Maybe you will even learn a new trick or two Read Our SEO Insights",
+                "metadata": {
+                    "title": "LOCOMOTIVE\u00ae Agency - Enterprise SEO + Paid Media Agency",
+                    "author": "Marty Martin LOCOMOTIVE",
+                    "hostname": "locomotive.agency",
+                    "date": "2024-10-10",
+                    "fingerprint": "779c20192fe39e4b",
+                    "id": null,
+                    "license": null,
+                    "comments": null,
+                    "language": null,
+                    "image": null,
+                    "pagetype": "website",
+                    "filedate": "2024-10-14",
+                    "source": "https://locomotive.agency/",
+                    "source-hostname": "LOCOMOTIVE Agency",
+                    "excerpt": "LOCOMOTIVE Agency - 2022 & 2019 U.S. Search Awards \"Best SEO Agency\" and \"Best PPC Campaign\" agency. We are a team of enterprise SEO & Paid Media specialists: Moving you forward.",
+                    "categories": "",
+                    "tags": ""
+                },
+                "word_count": 698,
+                "heading_structure": {
+                    "h1": 1,
+                    "h2": 9,
+                    "h3": 5,
+                    "h4": 1,
+                    "h5": 0,
+                    "h6": 0
+                },
+                "image_count": 97,
+                "schema_markup": [
+                    {
+                        "@context": "https://schema.org",
+                        "@type": "WebSite",
+                        "@id": "#website",
+                        "name": "Locomotive Agency",
+                        "url": "https://locomotive.agency/",
+                        "potentialAction": {
+                            "@type": "SearchAction",
+                            "target": "https://locomotive.agency/?s={search_term_string}",
+                            "query-input": "required name=search_term_string"
+                        }
+                    },
+                    {
+                        "@context": "http://schema.org",
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                            {
+                                "@type": "ListItem",
+                                "position": 1,
+                                "item": {
+                                    "@id": "https://locomotive.agency",
+                                    "name": "Home"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "prior_data": {
+        "GA4Extractor": {
+            "organic_sessions": "257",
+            "organic_users": "193",
+            "organic_new_users": "156",
+            "bounce_rate": "0.21789883268482491",
+            "referring_sites": [
+                "google",
+                "bing",
+                "duckduckgo",
+                "yahoo"
+            ],
+            "avg_time_on_page": "120.92305468093384",
+            "engagement_rate": "0.78210116731517509",
+            "revenue": null,
+            "user_demographics": [
+                {
+                    "age": "unknown",
+                    "gender": "unknown",
+                    "country": "United States",
+                    "users": "264"
+                },
+                {
+                    "age": "unknown",
+                    "gender": "unknown",
+                    "country": "India",
+                    "users": "26"
+                },
+                {
+                    "age": "unknown",
+                    "gender": "unknown",
+                    "country": "United Kingdom",
+                    "users": "24"
+                },
+                {
+                    "age": "25-34",
+                    "gender": "female",
+                    "country": "United States",
+                    "users": "21"
+                },
+                {
+                    "age": "18-24",
+                    "gender": "female",
+                    "country": "United States",
+                    "users": "17"
+                },
+                {
+                    "age": "18-24",
+                    "gender": "male",
+                    "country": "United States",
+                    "users": "15"
+                },
+                {
+                    "age": "35-44",
+                    "gender": "male",
+                    "country": "United States",
+                    "users": "14"
+                },
+                {
+                    "age": "45-54",
+                    "gender": "male",
+                    "country": "United States",
+                    "users": "13"
+                },
+                {
+                    "age": "18-24",
+                    "gender": "male",
+                    "country": "India",
+                    "users": "12"
+                },
+                {
+                    "age": "25-34",
+                    "gender": "male",
+                    "country": "United States",
+                    "users": "10"
+                }
+            ],
+            "device_categories": {
+                "desktop": "169",
+                "mobile": "24"
+            },
+            "pages_visited_prior": [
+                {
+                    "page": "https://www.google.com/",
+                    "views": "199"
+                },
+                {
+                    "page": "",
+                    "views": "45"
+                },
+                {
+                    "page": "https://www.bing.com/",
+                    "views": "12"
+                },
+                {
+                    "page": "https://locomotive.agency/why-work-with-us/who-we-are/",
+                    "views": "11"
+                },
+                {
+                    "page": "https://locomotive.agency/",
+                    "views": "6"
+                },
+                {
+                    "page": "https://locomotive.agency/why-work-with-us/",
+                    "views": "6"
+                },
+                {
+                    "page": "https://www.google.as/",
+                    "views": "4"
+                },
+                {
+                    "page": "https://locomotive.agency/case-studies/",
+                    "views": "3"
+                },
+                {
+                    "page": "https://locomotive.agency/contact-us/",
+                    "views": "3"
+                },
+                {
+                    "page": "https://duckduckgo.com/",
+                    "views": "2"
+                }
+            ],
+            "pages_visited_next": [
+                {
+                    "page": "/why-work-with-us/who-we-are/",
+                    "views": "51"
+                },
+                {
+                    "page": "/contact-us/",
+                    "views": "41"
+                },
+                {
+                    "page": "/case-studies/",
+                    "views": "31"
+                },
+                {
+                    "page": "/careers/",
+                    "views": "15"
+                },
+                {
+                    "page": "/why-work-with-us/",
+                    "views": "13"
+                },
+                {
+                    "page": "/awards/",
+                    "views": "10"
+                },
+                {
+                    "page": "/services/",
+                    "views": "8"
+                },
+                {
+                    "page": "/",
+                    "views": "6"
+                },
+                {
+                    "page": "/services/technical-seo/",
+                    "views": "6"
+                },
+                {
+                    "page": "/data-analysis-tools/",
+                    "views": "5"
+                }
+            ]
+        },
+        "GSCExtractor": {
+            "clicks": 170,
+            "impressions": 9201,
+            "ctr": 0.01847625258124117,
+            "avg_position": 64.38332789914139,
+            "ranking_keywords": [
+                {
+                    "query": "locomotive agency",
+                    "clicks": 108,
+                    "impressions": 619,
+                    "ctr": 0.17447495961227788,
+                    "position": 1.802907915993538
+                },
+                {
+                    "query": "locomotive marketing",
+                    "clicks": 4,
+                    "impressions": 35,
+                    "ctr": 0.11428571428571428,
+                    "position": 4.628571428571428
+                },
+                {
+                    "query": "locomotive seo",
+                    "clicks": 3,
+                    "impressions": 4,
+                    "ctr": 0.75,
+                    "position": 1
+                },
+                {
+                    "query": "locomotive.agency",
+                    "clicks": 2,
+                    "impressions": 7,
+                    "ctr": 0.2857142857142857,
+                    "position": 1.1428571428571428
+                },
+                {
+                    "query": "digital marketing agency",
+                    "clicks": 1,
+                    "impressions": 1,
+                    "ctr": 1,
+                    "position": 1
+                },
+                {
+                    "query": "seo marketing agency",
+                    "clicks": 1,
+                    "impressions": 155,
+                    "ctr": 0.0064516129032258064,
+                    "position": 166.36129032258066
+                },
+                {
+                    "query": "1a seo agentur",
+                    "clicks": 0,
+                    "impressions": 1,
+                    "ctr": 0,
+                    "position": 76
+                },
+                {
+                    "query": "advertising agency seo",
+                    "clicks": 0,
+                    "impressions": 91,
+                    "ctr": 0,
+                    "position": 11.263736263736265
+                },
+                {
+                    "query": "agence content marketing",
+                    "clicks": 0,
+                    "impressions": 1,
+                    "ctr": 0,
+                    "position": 84
+                },
+                {
+                    "query": "agence locomotive",
+                    "clicks": 0,
+                    "impressions": 2,
+                    "ctr": 0,
+                    "position": 15.5
+                }
+            ],
+            "top_no_click_queries": [
+                "locomotive agency",
+                "seo marketing agency",
+                "advertising agency seo",
+                "locomotive marketing",
+                "locomotive.agency",
+                "agence locomotive",
+                "locomotive seo",
+                "1a seo agentur",
+                "agence content marketing",
+                "digital marketing agency"
+            ]
+        },
+        "PSIExtractor": {
+            "desktop": {
+                "largest_contentful_paint": 1381.1552006873617,
+                "cumulative_layout_shift": 1.0192136505143283,
+                "interaction_to_next_paint": 4011.0196737296246,
+                "first_contentful_paint": 281.02387702882487,
+                "time_to_interactive": 4011.0196737296246,
+                "speed_index": 1265.1137706487627,
+                "total_blocking_time": 103.5,
+                "performance_score": 0.7,
+                "first_meaningful_paint": null
+            },
+            "mobile": {
+                "largest_contentful_paint": 5176.172379575061,
+                "cumulative_layout_shift": 1.0521852908881655,
+                "interaction_to_next_paint": 18844.090133547077,
+                "first_contentful_paint": 1004.0212159476996,
+                "time_to_interactive": 18844.090133547077,
+                "speed_index": 3990.8600438589433,
+                "total_blocking_time": 1547,
+                "performance_score": 0.28,
+                "first_meaningful_paint": null
+            }
+        },
+        "URLExtractor": {
+            "clean_content": "Trusted byLOCOMOTIVE Acquires IMS Marketing Expands to European MarketWe are thrilled to announce that LOCOMOTIVE Agency has acquired IMS Marketing a premier European digital marketing agency based in IrelandThis landmark acquisition marks a significant leap in LOCOMOTIVEs global growth strategy strengthening our international footprint and broadening our service portfolio including gotomarket expertise and strategy for the US and now EU and UK markets Read More Our ServicesLearn more about our workLOCOMOTIVE is a fullservice digital marketing agency offering a range of initiatives to drive your companys revenue and goals Our capabilities are rooted in the years of experience of our agency and its employeesTechnical SEOOnpage optimization is an important leg of your SEO efforts but SEO is more than keywords and content Our team of technical SEO agency specialists deliver measurable results Understand the Technical Side of SEO Content OnPage SEOContent is a vital part of SEO Our content team crafts engaging narratives to engage audiences and help drive organic growth to your website We create keywordrich factbased articles optimizations and more to reach your targeted audience Learn Why Content Matters Enterprise Local SEOWhether you have a single storefront or multiple locations across the country we can help you reach nearby customers Our local SEO specialists currently manage thousands of local business locations and will help target your local audience to get maximum visibility and engagement Get the Local SEO Edge Paid MediaPaid digital advertising is an effective way to put your brand and product or service in front of qualified buyers Our dedicated paid media team Google International Growth Agency Partners will create and manage campaigns to maximize your return on investment we speak MQL SQL ROAS CACPP etc We will also provide guidance on how to adjust tactics to stay ahead of the competition and expand your investment and ROI Unlock Better Paid Media Results ImplementationWhen resources are scarce or bandwidth is overloaded our agency implementation team can step in and completely manage or work alongside your team to provide the implementation support you need We have the experience to assist our clients in implementing our content recommendations getting their web projects off the ground and ensuring a successful rollout We will help you stay on track with your goals ensure quality control and provide ongoing optimization over time How We Take Work Off Your Team Link BuildingLink building is a powerful SEO tool to increase rankings traffic and visibility We provide custom linkbuilding services that are tailored to your business needs Our team will work to create quality backlinks from authoritative websites and sources to help boost your websites visibility Get Links from Trusted Sources Our AgencyMeet our talented teamThe people behind LOCOMOTIVE and our skill and desire to solve problems and offer the best possible outcome for our clients are the steam moving this engine forward Who We Are Awarded RecommendedBest SEO Agency AwardOur team is humbled to be recognized as both Best SEO Agency and Best PPC Agency by the acclaimed US Search Awards in 2023 on the heels of our Best SEO Agency wins in 2019 and 2022 While innovation and curiosity is at our core client success is the beating heart of the agency Being recognized in the industry means a lot but winning in search for our clients means even more Read About Our AwardWinning Team One of MidAtlantics Fastest Growing CompaniesBeing recognized by Inc in 2024 as one of the MidAtlantic Regions fastestgrowing businesses is a true testament of how committed our team is to producing outstanding outcomes and developing lasting partnerships See Our Industry Accolades Case StudiesView Our WorkWe have worked with many different types of businesses from small startups to large corporations Our portfolio is full of projects that showcase the impact we can have on businesses by optimizing their online presence See some of our success stories and case studies here See Our Case Studies This industry should be collaborativeThe goal of our industry blog is to share knowledge among other industry professionals as well as any clients or search marketers who may be interested We hope you find the content useful Maybe you will even learn a new trick or two Read Our SEO Insights",
+            "metadata": {
+                "title": "LOCOMOTIVE\u00ae Agency - Enterprise SEO + Paid Media Agency",
+                "author": "Marty Martin LOCOMOTIVE",
+                "hostname": "locomotive.agency",
+                "date": "2024-10-10",
+                "fingerprint": "779c20192fe39e4b",
+                "id": null,
+                "license": null,
+                "comments": null,
+                "language": null,
+                "image": null,
+                "pagetype": "website",
+                "filedate": "2024-10-13",
+                "source": "https://locomotive.agency/",
+                "source-hostname": "LOCOMOTIVE Agency",
+                "excerpt": "LOCOMOTIVE Agency - 2022 & 2019 U.S. Search Awards \"Best SEO Agency\" and \"Best PPC Campaign\" agency. We are a team of enterprise SEO & Paid Media specialists: Moving you forward.",
+                "categories": "",
+                "tags": ""
+            },
+            "word_count": 698,
+            "heading_structure": {
+                "h1": 1,
+                "h2": 9,
+                "h3": 5,
+                "h4": 1,
+                "h5": 0,
+                "h6": 0
+            },
+            "image_count": 97,
+            "schema_markup": [
+                {
+                    "@context": "https://schema.org",
+                    "@type": "WebSite",
+                    "@id": "#website",
+                    "name": "Locomotive Agency",
+                    "url": "https://locomotive.agency/",
+                    "potentialAction": {
+                        "@type": "SearchAction",
+                        "target": "https://locomotive.agency/?s={search_term_string}",
+                        "query-input": "required name=search_term_string"
+                    }
+                },
+                {
+                    "@context": "http://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "item": {
+                                "@id": "https://locomotive.agency",
+                                "name": "Home"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "insights": {
+        "causal_relationships_between_changes": [],
+        "significant_changes_to_organic_search_sources": [
+            {
+                "current_value": 231,
+                "description": "Organic search sessions decreased by 10% compared to the prior period.",
+                "details": "This could indicate a decrease in overall website visibility or a decline in the ranking of important keywords. It's crucial to investigate potential causes, such as algorithm updates or increased competition.",
+                "importance_score": 75,
+                "prior_value": 257,
+                "change_absolute": -26,
+                "change_percentage": -10.116731517509727
+            },
+            {
+                "current_value": 166,
+                "description": "The number of organic users decreased by 14% compared to the prior period.",
+                "details": "This suggests that fewer unique individuals are finding the website through organic search. This decline could be related to the decrease in organic sessions and might indicate a need to improve website content or keyword targeting.",
+                "importance_score": 70,
+                "prior_value": 193,
+                "change_absolute": -27,
+                "change_percentage": -13.989637305699482
+            },
+            {
+                "current_value": 140,
+                "description": "The number of new organic users decreased by 10% compared to the prior period.",
+                "details": "This indicates that the website is attracting fewer first-time visitors through organic search. It's important to monitor this trend and explore ways to improve brand visibility and attract new audiences.",
+                "importance_score": 65,
+                "prior_value": 156,
+                "change_absolute": -16,
+                "change_percentage": -10.256410256410255
+            }
+        ],
+        "significant_changes_to_prior_or_next_pages": [
+            {
+                "current_value": 67,
+                "description": "There was a significant decrease in the number of times users landed on the website from an unknown prior page.",
+                "details": "This could indicate a change in user behavior, such as a decrease in direct traffic or a shift in traffic sources.",
+                "importance_score": 60,
+                "prior_value": 45,
+                "change_absolute": 22,
+                "change_percentage": 48.888888888888886
+            },
+            {
+                "current_value": 6,
+                "description": "The contact us page saw a significant decrease in traffic from prior pages.",
+                "details": "This could indicate a change in user behavior or a decrease in the visibility of calls to action leading to the contact us page.",
+                "importance_score": 50,
+                "prior_value": 3,
+                "change_absolute": 3,
+                "change_percentage": 100.0
+            }
+        ],
+        "significant_changes_to_referral_sources": [
+            {
+                "current_value": 0,
+                "description": "Yahoo is no longer listed as a referring site.",
+                "details": "This suggests a complete drop in referral traffic from Yahoo. It's important to understand if this was an intentional change or if there are issues with the referral link on Yahoo.",
+                "importance_score": 50,
+                "prior_value": 1,
+                "change_absolute": -1,
+                "change_percentage": -100.0
+            }
+        ],
+        "significant_content_changes": [],
+        "significant_keyword_changes": [
+            {
+                "current_value": 1,
+                "description": "The keyword 'ad agencies in north carolina' received a click, indicating potential but with only one impression, it's too early to assess.",
+                "details": "Monitor the performance of this keyword and consider optimizing content or targeting strategies if it shows promise.",
+                "importance_score": 50,
+                "prior_value": 0,
+                "change_absolute": 1,
+                "change_percentage": 100
+            },
+            {
+                "current_value": 0,
+                "description": "The keyword 'locomotive seo' is no longer appearing in search results.",
+                "details": "Investigate the potential reasons for this keyword drop, such as increased competition or changes in search engine algorithms. Consider optimizing content or targeting different keywords.",
+                "importance_score": 60,
+                "prior_value": 3,
+                "change_absolute": -3,
+                "change_percentage": -100.0
+            }
+        ],
+        "significant_traffic_changes": [
+            {
+                "current_value": 0.3333333333333333,
+                "description": "The bounce rate increased significantly compared to the prior period.",
+                "details": "This indicates that a higher percentage of users are leaving the website after viewing only one page. It's crucial to investigate the reasons behind this increase and improve website engagement.",
+                "importance_score": 80,
+                "prior_value": 0.2178988326848249,
+                "change_absolute": 0.11543450064850841,
+                "change_percentage": 52.97619047619047
+            },
+            {
+                "current_value": 142.5695125887446,
+                "description": "The average time on page increased compared to the prior period.",
+                "details": "This suggests that users are spending more time engaging with the website's content. It's a positive sign, indicating that the content is relevant and engaging.",
+                "importance_score": 70,
+                "prior_value": 120.92305468093384,
+                "change_absolute": 21.646457907810756,
+                "change_percentage": 17.90101810190525
+            },
+            {
+                "current_value": 0.6666666666666666,
+                "description": "The engagement rate decreased significantly compared to the prior period.",
+                "details": "This indicates that users are less engaged with the website compared to the previous period. It's essential to investigate the reasons behind this decrease and explore ways to improve user experience and content engagement.",
+                "importance_score": 85,
+                "prior_value": 0.7821011673151751,
+                "change_absolute": -0.11543450064850846,
+                "change_percentage": -14.759535655058048
+            }
+        ]
+    }
+}

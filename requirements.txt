@@ -11,4 +11,5 @@ scrapingbee
 loguru
 python-dotenv
 pyyaml
+tenacity
 APScheduler

@@ -9,6 +9,7 @@ class PSIExtractor(DataExtractor):
         super().__init__()
         self.config = config
         self.api_key = config.api['psi_api_key']
+        self.timeout = config.api.get("psi_timeout", 60)
 
     def authenticate(self) -> None:
         """No authentication required for this extractor."""
@@ -40,7 +41,7 @@ class PSIExtractor(DataExtractor):
         }
 
         try:
-            response = requests.get(api_url, headers=headers)
+            response = requests.get(api_url, headers=headers, timeout=self.timeout)
             response.raise_for_status()
             data = response.json()
 
