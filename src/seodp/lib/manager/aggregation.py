@@ -1,7 +1,7 @@
 """Aggregation and processing module for SEO insights with configurable topics and significance threshold."""
 
 from typing import Dict, Any, List
-from lib.logging import logger
+from loguru import logger
 
 def calculate_percentage_change(current: float, previous: float) -> float:
     if previous == 0:

@@ -5,7 +5,7 @@ import os
 from apscheduler.schedulers.blocking import BlockingScheduler
 from lib.manager import Manager
 from settings import CONFIG
-from lib.logging import logger
+from loguru import logger
 
 
 def start_scheduled_run():

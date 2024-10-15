@@ -5,7 +5,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from typing import Dict, Any, List
-from lib.logging import logger
+from loguru import logger
 import os
 
 class EmailHandler:
