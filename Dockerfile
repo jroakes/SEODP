@@ -7,10 +7,11 @@ RUN curl -sSL https://install.python-poetry.org | python3 - --version 1.8.3
 ENV PATH="${PATH}:${POETRY_HOME}/bin"
 
 WORKDIR /app
-COPY pyproject.toml seodpconfig.yaml .env ./
+COPY pyproject.toml ./
 
 RUN poetry install --only=main --no-interaction --no-ansi
 
-COPY . ./
+COPY ./src ./src
 
-CMD ["poetry", "run", "python", "src/seodp/main.py"]
+ENTRYPOINT ["poetry", "run", "python", "src/seodp/main.py"]
+CMD ["--help"]
