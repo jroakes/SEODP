@@ -1,11 +1,12 @@
-version: '3'
+name: seodp
 services:
   seodp:
-    build: .
+    container_name: seodp
+    env_file:
+      - ./.env
     volumes:
-      - .:/app
-      - ./.env:/app/.env
-      - ./seodpconfig.yaml:/app/seodpconfig.yaml
-    environment:
-      - SCHEDULE=${SCHEDULE:-monthly}
-    command: python src/seodp/main.py --start
+      - "./service-account.json:/app/service-account.json"
+      - "./seodpconfig.yaml:/app/seodpconfig.yaml"
+    image: seodp
+    command: --start
+    restart: unless-stopped
