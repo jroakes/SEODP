@@ -7,6 +7,7 @@ services:
     volumes:
       - "./service-account.json:/app/service-account.json"
       - "./seodpconfig.yaml:/app/seodpconfig.yaml"
+      - "./seodp.db:/app/seodp.db"
     image: seodp
     command: --start
     restart: unless-stopped
